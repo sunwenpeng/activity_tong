@@ -1,0 +1,45 @@
+%h1(style="float:left;font-size:30px;padding-left:10px;width:1250px")
+  活动通
+%span(style="font-size:15px;padding-right:20px;margin-right:2%;margin-top:20px;width:200px;text-align:center")
+  - if flash[:notice2]
+    =flash[:notice2]
+  = link_to '退出','login_page' ,:style => 'color:blue'
+%div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
+  %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
+    %span
+      =link_to '首页','show',:style => 'color:blue'
+    %span
+      #{"/增加用户"}
+%div(class="hero-unit" style="font-size:15px;width:600px;margin-left:auto;margin-right:auto;margin-top:50px" )
+  =form_for :user , html:{:class => 'form-horizontal'} do |f|
+    %fieldset
+      %div(class="form-group" style="height:40px" )
+        %label(class="col-sm-2 control-label" style="font-weight:normal;padding-top:5px;width:120px"  )
+          帐号
+        %div(class="col-sm-10"style="width:400px")
+          =f.text_field :name, :class=>"form-control" ,:placeholder=>"请输入帐号"
+      %div(class="form-group" style="height:40px" )
+        %label(class="col-sm-2 control-label" style="font-weight:normal;padding-top:5px;width:120px" )
+          请设置密码
+        %div(class="col-sm-10"style="width:400px")
+          =f.password_field :password_init, :class=>"form-control" ,:placeholder=>"请输入密码"
+      %div(class="form-group" style="height:40px" )
+        %label(class="col-sm-2 control-label" style="font-weight:normal;padding-top:5px;width:120px" )
+          请确认密码
+        %div(class="col-sm-10"style="width:400px")
+          =f.password_field :password, :class=>"form-control" ,:placeholder=>"请确认密码"
+      %div(class="form-group" style="height:40px" )
+        %label(class="col-sm-2 control-label" style="font-weight:normal;padding-top:5px;width:120px" )
+          忘记密码问题
+        %div(class="col-sm-10"style="width:400px")
+          =f.text_field :password_question,:class=>"form-control",:placeholder=>"请输入忘记密码问题"
+      %div(class="form-group" style="height:40px" )
+        %label(class="col-sm-2 control-label" style="font-weight:normal;padding-top:5px;width:120px" )
+          忘记密码答案
+        %div(class="col-sm-10" style="width:400px")
+          =f.text_field :password_question_answer,:class=>"form-control",:placeholder=>"请输入忘记密码答案"
+      - if flash[:notice1]
+        %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
+          =flash[:notice1]
+      %button(type="submit" class="btn btn-primary btn-lg btn-block action" style="width:50%;margin-left:25%;margin-top:10px" )
+        注册
