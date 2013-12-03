@@ -8,9 +8,9 @@ ActivityTong::Application.routes.draw do
   get "user/modify_password_question_page"
 
   get "user/admin_modify_password_page" ,:as =>'modify_password'
-  #post "user/admin_modify_password_page"
   get "user/admin_add_new_user"
 
+  match 'user/admin_modify_password_page' => 'user#edit', :via => :post
   match 'user/admin_modify_password_page/:id' => 'user#edit',:via=>:post,:as=>'admin'
   match 'user/delete/:id' =>'user#destroy',:via=>:delete,:as =>'user'
   match 'user/edit/:id' => 'user#modify_password_page', :via =>:get ,:as=>'users'

@@ -9,7 +9,7 @@
     用户管理
   =link_to '添加用户',user_show_enroll_form_path,:class => 'add-button'
 %div(style="margin-left:10%;width:80%;")
-  %table( class="table table-hover" )
+  %table(class="table table-hover")
     %thead
       %tr
         %th(style="text-align:center")
@@ -31,5 +31,5 @@
             %span(style="font-color:red" )
               =link_to '删除',u,:method=>:delete,data:{confirm:'Are you sure?'}
             %span(style="font-color:red")
-              =link_to '修改密码', modify_password_path(:user => u)
+              =link_to '修改密码', modify_password_path(:user =>u)
 

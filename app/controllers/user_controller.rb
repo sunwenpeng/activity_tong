@@ -11,6 +11,7 @@ class UserController < ApplicationController
   end
 
   def login
+     puts '====================================================='
       user = User.where(:name => params[:@user][:name],:password => params[:@user][:password])
       if user.empty?
         flash[:notice0] = "用户名或密码错误！"
