@@ -6,18 +6,17 @@ class UserController < ApplicationController
   end
 
   def show
-    flash[:notice2]= "你好," +session[:user_name]
+    flash[:notice2]= "你好," + User.find(session[:user_id]).name
     @user =User.where(:admin=>false)
   end
 
   def login
-     puts '====================================================='
       user = User.where(:name => params[:@user][:name],:password => params[:@user][:password])
       if user.empty?
         flash[:notice0] = "用户名或密码错误！"
         render(:action =>'login_page')
       else
-        session[:user_name] = user[0].name
+        session[:user_id] = user[0].id
         redirect_to action:'show'
       end
   end
@@ -41,8 +40,8 @@ class UserController < ApplicationController
             respond_to do |format|
               if @user.save
                 format.html { redirect_to action: 'login_page'}
-                                          format.json { render action: 'login_page', status: :created, location: @user }
-                                        else
+                format.json { render action: 'login_page', status: :created, location: @user }
+              else
                 format.html { redirect_to action: 'login_page' }
                 format.json { render json: @user.errors, status: :unprocessable_entity }
               end
@@ -68,15 +67,14 @@ class UserController < ApplicationController
   end
 
   def modify_password_page
-     session[:user_id]=params[:id]
+
   end
 
   def admin_modify_password_page
-
+     session[:user_id]= User.find(session[:user_id]).id
   end
 
   def modify_password
-
   end
 
   def update
@@ -85,6 +83,8 @@ class UserController < ApplicationController
        render action:'modify_password_page'
     else
       if params[:@user][:password_init] == params[:@user][:password]
+        puts '================================================='
+        puts session[:user_id]
         user = User.find(session[:user_id])
         user.password = params[:@user][:password]
         user.save
@@ -109,7 +109,7 @@ class UserController < ApplicationController
         render action: 'modify_password_login_page'
       else
         user = User.where(:name => params[:@user][:name])
-        session[:user_id]=user[0].id
+        session[:user_id]= user[0].id
         redirect_to action: 'modify_password_question_page'
       end
     end
@@ -118,6 +118,7 @@ class UserController < ApplicationController
   def answer_check
     usr= User.find(session[:user_id])
     if params[:@user][:password_question_answer] == usr.password_question_answer
+      session[:user_id]=usr.id
       redirect_to action: 'modify_password_page'
     else
       flash[:notice5]="忘记密码答案错误"
