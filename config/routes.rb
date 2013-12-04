@@ -23,7 +23,8 @@ ActivityTong::Application.routes.draw do
   match "/user/modify_password_login_page" => "user#user_check", :via=> :post
   match "/user/modify_password_question_page" => "user#answer_check", :via=> :post
   match "/user/modify_password_page" => "user#update", :via=> :post
-  match '/user/admin_add_new_user' => 'user#enroll', :via => :post
+  match '/user/admin_add_new_user' => 'user#adminAddNewUser', :via => :post
+  #match '/user/show' => 'user#add_user' ,:via =>:post
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

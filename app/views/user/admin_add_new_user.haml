@@ -38,8 +38,8 @@
           忘记密码答案
         %div(class="col-sm-10" style="width:400px")
           =f.text_field :password_question_answer,:class=>"form-control",:placeholder=>"请输入忘记密码答案"
-      - if flash[:notice1]
+      - if flash[:add_error_notice]
         %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
-          =flash[:notice1]
+          =flash[:add_error_notice]
       %button(type="submit" class="btn btn-primary btn-lg btn-block action" style="width:50%;margin-left:25%;margin-top:10px" )
         注册

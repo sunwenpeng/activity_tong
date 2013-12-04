@@ -7,7 +7,7 @@ class UserController < ApplicationController
 
   def show
     flash[:notice2]= "你好," + User.find(session[:user_id]).name
-    @user =User.where(:admin=>false)
+    @user =User.paginate(page:params[:page],per_page:9).where(:admin=>false)
   end
 
   def login
@@ -95,6 +95,39 @@ class UserController < ApplicationController
       else
         flash[:modify_password_notice]="两次密码输入的不一致，请重新输入!"
         render action:'modify_password_page'
+      end
+    end
+  end
+
+  def adminAddNewUser
+    if params[:user][:name].empty?
+      flash.now[:add_error_notice] = "请输入用户名!"
+      render action: 'admin_add_new_user'
+    else
+      if User.where(:name => params[:user][:name]).empty?
+        if params[:user][:password_init].empty?
+          flash[:add_error_notice] = "请输入密码!"
+          render action: 'admin_add_new_user'
+        else
+          if params[:user][:password_init]!= params[:user][:password]
+            flash[:add_error_notice] = "两次输入的密码不一样！"
+            render action: 'admin_add_new_user'
+          else
+            @user = User.new(user_params)
+            respond_to do |format|
+              if @user.save
+                format.html { redirect_to action: 'show'}
+                format.json { render action: 'show', status: :created, location: @user }
+              else
+                format.html { redirect_to action: 'show' }
+                format.json { render json: @user.errors, status: :unprocessable_entity }
+              end
+            end
+          end
+        end
+      else
+        flash[:add_error_notice] = "用户名已存在!"
+        render action: 'admin_add_new_user'
       end
     end
   end
