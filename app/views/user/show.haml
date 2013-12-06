@@ -3,35 +3,37 @@
 %span(style="font-size:15px;padding-right:20px;margin-right:2%;margin-top:20px;width:200px;text-align:center")
   - if flash[:notice2]
     =flash[:notice2]
-  = link_to '退出','login_page' ,:style => 'color:blue'
+  = link_to '退出','logout',  :style => 'color:blue'
 %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
   %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
     用户管理
+-if User.find(session[:current_user_id]).name == 'admin'
   %div(style='float:right;margin-right:790px;width:200px;height:80px;margin-top:3px;margin-left:20px')
     =link_to "添加用户", 'admin_add_new_user', :class => "btn btn-default"
-%div(style="margin-left:10%;width:80%;")
-  %table(class="table table-hover" style="margin-top:0px" )
-    %thead
-      %tr
-        %th(style="text-align:center")
-          编号
-        %th(style="text-align:center")
-          用户名
-        %th(style="text-align:center")
-          操作
-    %tbody(style="text-align:center")
-      - i = 1
-      - @user.each do |u|
+-if User.find(session[:current_user_id]).name == 'admin'
+  %div(style="margin-left:10%;width:80%;")
+    %table(class="table table-hover" style="margin-top:0px" )
+      %thead
         %tr
-          %td
-            = i
-            -i = i+1
-          %td
-            = u.name
-          %td(style="font-color:red" )
-            %span(style="font-color:red" )
-              =link_to '删除',u, :method=>:delete,data:{confirm:'Are you sure?'}
-            %span(style="font-color:red")
-              =link_to '修改密码', admin_url(id:u.id)
-%footer(style="float:right;margin-right:50px;font-size:20px")
+          %th(style="text-align:center")
+            编号
+          %th(style="text-align:center")
+            用户名
+          %th(style="text-align:center")
+            操作
+      %tbody(style="text-align:center")
+        - i = 1
+        - @user.each do |u|
+          %tr
+            %td
+              = i
+              -i = i+1
+            %td
+              = u.name
+            %td(style="font-color:red" )
+              %span(style="font-color:red" )
+                =link_to '删除',u, :method=>:delete,data:{confirm:'Are you sure?'}
+              %span(style="font-color:red")
+                =link_to '修改密码', admin_url(id:u.id)
+%div(style="margin-right:50px;font-size:20px;float:right")
   =will_paginate @user

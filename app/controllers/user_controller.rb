@@ -2,23 +2,41 @@ class UserController < ApplicationController
   include(UserHelper)
 
   def login_page
+    if session[:current_user_id]==nil
 
+    else
+      redirect_to user_index_path(:id => session[:current_user_id])
+    end
   end
 
   def show
-    flash[:notice2]= "你好," + User.find(session[:user_id]).name
-    @user =User.paginate(page:params[:page],per_page:9).where(:admin=>false)
+    if session[:current_user_id] == nil
+       redirect_to action:'login_page'
+    else
+      flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
+      @user =User.paginate(page:params[:page],per_page:9).where(:admin=>false)
+    end
   end
 
   def login
       user = User.where(:name => params[:@user][:name],:password => params[:@user][:password])
       if user.empty?
         flash[:notice0] = "用户名或密码错误！"
-        render(:action =>'login_page')
+        redirect_to
       else
-        session[:user_id] = user[0].id
-        redirect_to action:'show'
+        session[:current_user_id] = user[0].id
+        if user[0].name == 'admin'
+           redirect_to user_index_path(:id=> user[0].name)
+        else
+          redirect_to user_index_path(:id => user[0].name)
+        end
       end
+  end
+
+  def logout
+    session[:current_user_id] = nil
+    redirect_to action:'login_page'
+    puts "12432"
   end
 
   def enroll
@@ -71,7 +89,6 @@ class UserController < ApplicationController
   end
 
   def admin_modify_password_page
-     session[:user_id]= User.find(session[:user_id]).id
   end
 
   def modify_password
@@ -83,13 +100,12 @@ class UserController < ApplicationController
        render action:'modify_password_page'
     else
       if params[:@user][:password_init] == params[:@user][:password]
-        puts '================================================='
-        puts session[:user_id]
         user = User.find(session[:user_id])
         user.password = params[:@user][:password]
         user.save
+        session[:current_user_id] = user.id
         respond_to do |format|
-            format.html { redirect_to action:'show'}
+            format.html { redirect_to user_index_path(:id =>user.id)}
             format.json { head :no_content }
         end
       else
@@ -97,6 +113,10 @@ class UserController < ApplicationController
         render action:'modify_password_page'
       end
     end
+  end
+
+  def admin_add_new_user
+
   end
 
   def adminAddNewUser
@@ -116,10 +136,10 @@ class UserController < ApplicationController
             @user = User.new(user_params)
             respond_to do |format|
               if @user.save
-                format.html { redirect_to action: 'show'}
+                format.html { redirect_to user_index_path(:id=>@user.name)}
                 format.json { render action: 'show', status: :created, location: @user }
               else
-                format.html { redirect_to action: 'show' }
+                format.html { redirect_to user_index_path(:id=>@user.name)}
                 format.json { render json: @user.errors, status: :unprocessable_entity }
               end
             end
@@ -162,7 +182,7 @@ class UserController < ApplicationController
   def destroy
     User.delete params[:id]
     respond_to do |format|
-      format.html { redirect_to user_index_path }
+      format.html { redirect_to user_index_path(:id=> session[:current_user_id]) }
       format.json { head :no_content }
     end
   end
@@ -177,12 +197,12 @@ class UserController < ApplicationController
          user.password = params[:@user][:password]
          user.save
          respond_to do |format|
-           format.html { redirect_to action:'show'}
+           format.html { redirect_to user_index_path(:id=> session[:current_user_id])}
            format.json { head :no_content }
          end
        else
          flash[:admin_modify_password_notice]="两次密码输入的不一致，请重新输入!"
-         render action:'admin_modify_password_page'
+         redirect_to
        end
      end
   end
