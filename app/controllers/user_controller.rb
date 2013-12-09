@@ -89,6 +89,9 @@ class UserController < ApplicationController
   end
 
   def admin_modify_password_page
+    if session[:current_user_id]==nil
+      return redirect_to action:'login_page'
+    end
   end
 
   def modify_password
@@ -116,7 +119,9 @@ class UserController < ApplicationController
   end
 
   def admin_add_new_user
-
+    if session[:current_user_id]==nil
+      return redirect_to action:'login_page'
+    end
   end
 
   def adminAddNewUser
@@ -175,11 +180,14 @@ class UserController < ApplicationController
       redirect_to action: 'modify_password_page'
     else
       flash[:notice5]="忘记密码答案错误"
-      redirect_to action: 'modify_password_question_page'
+      redirect_to
     end
   end
 
   def destroy
+    if session[:current_user_id]==nil
+      return redirect_to action:'login_page'
+    end
     User.delete params[:id]
     respond_to do |format|
       format.html { redirect_to user_index_path(:id=> session[:current_user_id]) }
@@ -191,6 +199,7 @@ class UserController < ApplicationController
      user = User.find(params[:id])
      if params[:@user][:password_init].empty?
        flash[:admin_modify_password_notice]="密码不能为空"
+       flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
        redirect_to
      else
        if params[:@user][:password_init] == params[:@user][:password]
@@ -202,6 +211,7 @@ class UserController < ApplicationController
          end
        else
          flash[:admin_modify_password_notice]="两次密码输入的不一致，请重新输入!"
+         flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
          redirect_to
        end
      end
