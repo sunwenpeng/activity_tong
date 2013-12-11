@@ -1,6 +1,9 @@
 class UserController < ApplicationController
-  include(UserHelper)
+  require 'json'
+  respond_to :json
 
+  include(UserHelper)
+  skip_before_filter :verify_authenticity_token, :only => [:customer_check ]
   def login_page
     if session[:current_user_id]==nil
 
@@ -13,8 +16,10 @@ class UserController < ApplicationController
     if session[:current_user_id] == nil
        redirect_to action:'login_page'
     else
-      flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
-      @user =User.paginate(page:params[:page],per_page:9).where(:admin=>false)
+      name = User.find(session[:current_user_id]).name
+      flash[:notice2]= "你好," + name
+      @user =User.paginate(page:params[:page],per_page:10).where(:admin=>false)
+      @activities=Activity.paginate(page:params[:page],per_page:10).where(:create_user=> name)
     end
   end
 
@@ -36,7 +41,6 @@ class UserController < ApplicationController
   def logout
     session[:current_user_id] = nil
     redirect_to action:'login_page'
-    puts "12432"
   end
 
   def enroll
@@ -216,6 +220,18 @@ class UserController < ApplicationController
        end
      end
   end
+
+  def customer_check
+    user= User.where(:name => params[:name] , :password => params[:password])
+    respond_to do |format|
+      if user.empty?
+        format.json {render :json=> false}
+      else
+        format.json {render :json=> true}
+      end
+    end
+  end
+
 
 
   private

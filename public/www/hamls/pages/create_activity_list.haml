@@ -1,0 +1,13 @@
+%header(style="font-size:20pt;height:60px;line-height:60px" )
+  创建活动
+  %div(class="header-left" )
+    %a(class="btn" ng-tap="go_to_activity_list()")
+      返回
+%div(id="wrapper" class="scrollable")
+  %form(class="wrapper-inner" )
+    %fieldset(class="form_wrapper" style="font-size:16pt" )
+      活动名称
+      %input(ng-model="input_activity_name" ng-change="activity_name_input_status()" type="text" class="input-full" style="height:30px" )
+      %button(ng-model="create_button" class="btn btn-large" ng-tap="go_to_activity_enroll()" ng-disabled="!input_activity_name")
+        创建
+      %span(ng-show="checked" style="color:red" ) 活动名称重复！

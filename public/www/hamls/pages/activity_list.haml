@@ -1,0 +1,13 @@
+%header(style="font-size:20pt;height:60px;line-height:60px;" )
+  活动列表
+  %div(class="header-left" )
+    %a(class="btn-primary btn" ng-tap="push_data()")
+      同步数据
+  %div(class="header-right" )
+    %a(class="btn-primary btn" ng-tap="go_to_create_activity_list()" ng-disabled="activity_create_button_checked")
+      创建活动
+%div(id="wrapper" class="scrollable")
+  %ul( class="survey-list")
+    %li(class="{{activity.status}}"  ng-tap="go_to_activity_enroll_list('{{activity.name}}')"  ng-repeat="activity in activities | orderBy:'order':!reverse")
+      %a( style="height:50px;line-height:50px;font-size:16pt;" )
+        {{activity.name}}

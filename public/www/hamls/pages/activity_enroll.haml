@@ -1,0 +1,32 @@
+%header(id="activity_enroll_page" style="font-size:20pt;height:60px;line-height:60px" )
+  报名({{enroll_number}}人)
+  %div(class="header-left"  )
+    %a(class="btn btn-primary" ng-tap="go_to_activity_list()")
+      返回
+  %div(ng-switch="activity_status"  )
+    %div(ng-switch-when="未开始" class="header-right")
+      %a(class="btn-primary btn" ng-tap="begin()" )
+        开始
+    %div(ng-switch-when="started_and_unended" class="header-right")
+      %a(class="btn-primary btn" ng-tap="end()" )
+        结束
+    %div(ng-switch-when="已结束" class="header-right")
+      %a(class="btn-primary btn"  ng-disabled="true")
+        结束
+
+%div(id="wrapper" class="scrollable")
+  %ul(class="survey-list")
+    %li(ng-repeat="EnrollingActivity in EnrollingActivities" style="height:50px;line-height:50px;font-size:16pt;" )
+      %span(style="float:left")
+        {{EnrollingActivity.enroll_name}}
+      %span(style="float:right")
+        {{EnrollingActivity.phone}}
+
+%footer
+  %ul(class="footer-nav footer-nav-2tabs"  )
+    %li()
+      %a(style="height:60px;line-height:50px;font-size:14pt" ng-tap=" " )
+        报名
+    %li
+      %a(style="height:60px;line-height:50px;font-size:14pt" ng-tap="go_bid_list_page()")
+        竞价

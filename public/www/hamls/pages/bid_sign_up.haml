@@ -1,0 +1,27 @@
+%header(id="bid_sign_up_page" style="font-size:20pt;height:60px;line-height:60px;" )
+  {{bid_sign_up_name_and_number}}
+  %div(class="header-left")
+    %a(class="btn btn-primary"  ng-tap="turn_to_bid_list_page()")
+      返回
+  %div(ng-switch="end_button_choice" class="header-right")
+    %div(ng-switch-when="true")
+      %a(class="btn btn-primary" ng-tap="end_bid_sign_up()")
+        结束
+    %div(ng-switch-when="false")
+      %a(class="btn btn-primary" ng-disabled="true")
+        结束
+%div(id="wrapper" class="scrollable")
+  %ul(class="survey-list")
+    %li(ng-repeat="BidSignUpPeople in BidSignUpPeoples" style="height:60px;line-height:70px;font-size:16pt;")
+      %h3(style="float:left" )
+        {{BidSignUpPeople.order}}
+      %h5(style="float:right" )
+        {{BidSignUpPeople.name}}
+        <br/>
+        {{BidSignUpPeople.phone}}
+%footer
+  %div(ng-switch="show_more_button")
+    %div(ng-switch-when="true")
+      %a.btn.text-center( class="button" style="width:100% ;text-align:center;height:60px;line-height:50px;font-size:22pt; font-color:red ;" ng-tap="show_more_sign_up_info()")
+        更多
+

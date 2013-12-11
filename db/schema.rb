@@ -11,13 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131206063844) do
+ActiveRecord::Schema.define(version: 20131211065620) do
 
-  create_table "students", force: true do |t|
-    t.string   "name"
-    t.string   "password"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "activities", force: true do |t|
+    t.string "name"
+    t.string "status"
+    t.string "create_user"
+  end
+
+  create_table "bid_ups", force: true do |t|
+    t.string "name"
+    t.string "phone"
+    t.string "activity"
+    t.string "bid_name"
+    t.string "price"
+    t.string "user"
+  end
+
+  create_table "bids", force: true do |t|
+    t.string "name"
+    t.string "activity"
+    t.string "status"
+    t.string "user"
+  end
+
+  create_table "sign_ups", force: true do |t|
+    t.string "name"
+    t.string "phone"
+    t.string "activity"
+    t.string "user"
   end
 
   create_table "users", force: true do |t|

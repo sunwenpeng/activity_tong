@@ -3,6 +3,8 @@ ruby '2.0.0'
 
 gem 'haml'
 
+gem 'bootstrap-will_paginate', '0.0.10'
+
 gem 'will_paginate'
 
 gem 'bootstrap-sass', '2.3.2.0'

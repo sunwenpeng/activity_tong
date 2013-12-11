@@ -1,0 +1,18 @@
+%header( style="font-size:20pt;height:60px;line-height:60px;" )
+  {{bid_sign_up_name_and_number}}
+  %div(class="header-left")
+    %a(class="btn btn-primary"  ng-tap="return_to_bid_list_page()")
+      返回
+  %div(class="header-right")
+    %a(class="btn btn-primary" ng-tap="return_to_bid_result_page()")
+      列表
+%div(id="wrapper" class="scrollable")
+  %ul( class="survey-list")
+    %li(style="height:60px;line-height:60px;" ng-repeat="bid_analysis_info in bid_analysis_infos | orderBy:'price'")
+      %h5( style="text-align:center;float:left;" )
+        {{bid_analysis_info.price}}元
+      %h5( style="text-align:center;float:right;" )
+        {{bid_analysis_info.number}}人
+%footer(style="text-align：center;height:60px;line-height:60px;font-size:20px;" )
+  %div(style="margin-left:20%;text-align：center;height:60px;line-height:60px;font-size:20px;font-color:yellow;")
+    {{bid_success_person_info}}

@@ -1,13 +1,14 @@
 %header(style="margin-left:20px;margin-top:20px" )
-  %h1(style="width:1250px" )
+  %h1(style="width:1150px" )
     活动通
-  %span(style="line-height:38px;")
+  %div(style="line-height:38px;width:100px;margin-left:1200px;")
     - if flash[:notice2]
       =flash[:notice2]
     = link_to '退出','logout', :style => 'color:blue'
 -if User.find(session[:current_user_id]).name != 'admin'
   %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
     %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
+      活动信息
 -if User.find(session[:current_user_id]).name == 'admin'
   %div(style="padding-top:3px;margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
     %div(style="width:80px;margin-left:10px;float:left;margin-top:10px;font-size:18px")
@@ -26,7 +27,7 @@
           %th(style="text-align:center")
             操作
       %tbody(style="text-align:center")
-        - i = 1
+        - i = (params[:page].to_i)*10+1
         - @user.each do |u|
           %tr
             %td
@@ -39,5 +40,31 @@
                 =link_to '删除',u, :method=>:delete,data:{confirm:'Are you sure?'}
               %span(style="font-color:red")
                 =link_to '修改密码', admin_url(id:u.id)
+-if User.find(session[:current_user_id]).name != 'admin'
+  %div(style="margin-left:10%;width:80%;")
+    %table(class="table table-hover" style="margin-top:0px" )
+      %thead
+        %tr
+          %th(style="text-align:center")
+            编号
+          %th(style="text-align:center")
+            活动名称
+          %th(style="text-align:center")
+            报名人数
+          %th(style="text-align:center")
+            竞价次数
+      %tbody(style="text-align:center")
+        - i = (params[:page].to_i)*10+1
+        - @activities.each do |a|
+          %tr
+            %td
+              = i
+              -i = i+1
+            %td
+              = link_to a.name
+            %td
+              = (SignUp.where(:user=>User.find(session[:current_user_id]).name,:activity=>a[:name])).length
+            %td
+              = Bid.where(:user=>User.find(session[:current_user_id]).name,:activity=>a[:name]).length
 %div(style="margin-right:50px;font-size:20px;float:right")
-  =will_paginate @user
+  =will_paginate @user,{:previous_label =>'上一页',:next_label => '下一页'}
