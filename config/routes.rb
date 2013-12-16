@@ -7,23 +7,39 @@ ActivityTong::Application.routes.draw do
   get "user/modify_password_page"
   get "user/modify_password_login_page"
   get "user/modify_password_question_page"
-  get "user/show/admin_add_new_user" => 'user#admin_add_new_user'
-  get 'user/show/:id/admin_modify_password_page' => 'user#admin_modify_password_page'
+  get "user/show/admin_add_new_user" => 'admin#admin_add_new_user'
+  get 'user/show/:id/admin_modify_password_page' => 'admin#admin_modify_password_page'
   get 'user/show/logout' => 'user#logout'
+  get 'user/show/:id/logout' => 'user#logout'
+  get 'user/show/:id/:name/logout' => 'user#logout'
   get 'user/show/:id' => 'user#show', :as => 'user_index'
-  get 'user/customer_show'
+  get 'user/bid_list'
+  get 'user/show/:id/:name' => 'user#bid_list' ,:as => 'bids'
 
-  match 'user/show/:id/admin_modify_password_page' => 'user#edit', :via=> :post,:as=>'admin'
+  get 'user/show/:id/:name/sign_up_list' => 'user#sign_up_list', :as =>'sign_ups'
+  get 'user/show/:id/:name/:bid_name' => 'user#bid_detail_list' , :as => 'bid_detail'
+
+  get 'user/admin_show_user/:id/:user_name' => 'user#show' ,:as=> 'show_user'
+
+  post 'user/customer_check'
+  post 'activity/customer_data_update'
+
+  #match 'user/show/:id/:user_name'=> 'admin#show_user_page' ,:via=>:post, :as=> 'show_user'
+
+  match 'user/show/:id/admin_modify_password_page' => 'admin#edit', :via=> :post,:as=>'admin'
   match 'user/delete/:id' =>'user#destroy',:via=>:delete,:as =>'user'
   match "/user/show_enroll_form" => "user#enroll", :via => :post
   match "/user/login_page" => "user#login", :via => :post
   match "/user/modify_password_login_page" => "user#user_check", :via=> :post
   match "/user/modify_password_question_page" => "user#answer_check", :via=> :post
   match "/user/modify_password_page" => "user#update", :via=> :post
-  match '/user/show/admin_add_new_user' => 'user#adminAddNewUser', :via => :post
-  post 'user/customer_check'
-  post 'activity/customer_data_update'
-  #match '/user/customer_check.json' => "user#customer_check",:via=>:post
+  match '/user/show/admin_add_new_user' => 'admin#adminAddNewUser', :via => :post
+  #match '/user/show/:id/:name/bid_list' => 'user#'
+
+
+
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

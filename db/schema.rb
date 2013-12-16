@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131211065620) do
+ActiveRecord::Schema.define(version: 20131213054908) do
 
   create_table "activities", force: true do |t|
     t.string "name"
@@ -19,14 +19,17 @@ ActiveRecord::Schema.define(version: 20131211065620) do
     t.string "create_user"
   end
 
-  create_table "bid_ups", force: true do |t|
-    t.string "name"
-    t.string "phone"
+  create_table "bid_results", force: true do |t|
     t.string "activity"
     t.string "bid_name"
-    t.string "price"
+    t.string "name"
+    t.string "phone"
+    t.float  "price"
     t.string "user"
   end
+
+# Could not dump table "bid_ups" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "bids", force: true do |t|
     t.string "name"

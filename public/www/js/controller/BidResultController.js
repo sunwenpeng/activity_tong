@@ -19,7 +19,6 @@ function BidResultController($scope, $navigate) {
     $scope.result = Bid.GetBidSuccessPersonInfo()  ;
 
     $scope.bid_result_pop_out = JSON.stringify(Bid.GetBidSuccessPersonInfo()) == JSON.stringify([]) ? false : true ;
-
     $scope.shut_down_the_result_pop_out = function () {
         $scope.bid_result_pop_out = undefined ;
     }

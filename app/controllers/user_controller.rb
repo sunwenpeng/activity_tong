@@ -1,25 +1,33 @@
 class UserController < ApplicationController
   require 'json'
   respond_to :json
-
   include(UserHelper)
   skip_before_filter :verify_authenticity_token, :only => [:customer_check ]
   def login_page
-    if session[:current_user_id]==nil
+    if session[:current_user_id]==nil&&session[:current_user]==nil
 
     else
-      redirect_to user_index_path(:id => session[:current_user_id])
+       render user_index_path(:id => session[:current_user_id])
     end
   end
 
   def show
-    if session[:current_user_id] == nil
+    if session[:current_user_id] == nil&&session[:current_user]==nil
        redirect_to action:'login_page'
     else
       name = User.find(session[:current_user_id]).name
       flash[:notice2]= "你好," + name
-      @user =User.paginate(page:params[:page],per_page:10).where(:admin=>false)
-      @activities=Activity.paginate(page:params[:page],per_page:10).where(:create_user=> name)
+      if params[:page]==nil
+         @i=(params[:page].to_i)*10+1
+      else
+        @i= (params[:page].to_i-1)*10+1
+      end
+      @users =User.paginate(page:params[:page],per_page:10).where(:admin=>false)
+      if params[:user_name]
+         session[:current_user] = params[:user_name]
+      end
+      @activities=Activity.paginate(page:params[:page],per_page:10).where(:create_user=> session[:current_user])
+      @current_bid = Bid.where(:user=>session[:current_user],:status=>'biding')[0]
     end
   end
 
@@ -30,6 +38,7 @@ class UserController < ApplicationController
         redirect_to
       else
         session[:current_user_id] = user[0].id
+        session[:current_user] = user[0].name
         if user[0].name == 'admin'
            redirect_to user_index_path(:id=> user[0].name)
         else
@@ -40,6 +49,7 @@ class UserController < ApplicationController
 
   def logout
     session[:current_user_id] = nil
+    session[:current_user] = nil
     redirect_to action:'login_page'
   end
 
@@ -93,7 +103,7 @@ class UserController < ApplicationController
   end
 
   def admin_modify_password_page
-    if session[:current_user_id]==nil
+    if session[:current_user_id]==nil && session[:current_user] ==nil
       return redirect_to action:'login_page'
     end
   end
@@ -122,44 +132,7 @@ class UserController < ApplicationController
     end
   end
 
-  def admin_add_new_user
-    if session[:current_user_id]==nil
-      return redirect_to action:'login_page'
-    end
-  end
 
-  def adminAddNewUser
-    if params[:user][:name].empty?
-      flash.now[:add_error_notice] = "请输入用户名!"
-      render action: 'admin_add_new_user'
-    else
-      if User.where(:name => params[:user][:name]).empty?
-        if params[:user][:password_init].empty?
-          flash[:add_error_notice] = "请输入密码!"
-          render action: 'admin_add_new_user'
-        else
-          if params[:user][:password_init]!= params[:user][:password]
-            flash[:add_error_notice] = "两次输入的密码不一样！"
-            render action: 'admin_add_new_user'
-          else
-            @user = User.new(user_params)
-            respond_to do |format|
-              if @user.save
-                format.html { redirect_to user_index_path(:id=>@user.name)}
-                format.json { render action: 'show', status: :created, location: @user }
-              else
-                format.html { redirect_to user_index_path(:id=>@user.name)}
-                format.json { render json: @user.errors, status: :unprocessable_entity }
-              end
-            end
-          end
-        end
-      else
-        flash[:add_error_notice] = "用户名已存在!"
-        render action: 'admin_add_new_user'
-      end
-    end
-  end
 
   def user_check
     if params[:@user][:name].empty?
@@ -189,7 +162,7 @@ class UserController < ApplicationController
   end
 
   def destroy
-    if session[:current_user_id]==nil
+    if session[:current_user_id]==nil || session[:current_user]== nil
       return redirect_to action:'login_page'
     end
     User.delete params[:id]
@@ -197,28 +170,6 @@ class UserController < ApplicationController
       format.html { redirect_to user_index_path(:id=> session[:current_user_id]) }
       format.json { head :no_content }
     end
-  end
-
-  def edit
-     user = User.find(params[:id])
-     if params[:@user][:password_init].empty?
-       flash[:admin_modify_password_notice]="密码不能为空"
-       flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
-       redirect_to
-     else
-       if params[:@user][:password_init] == params[:@user][:password]
-         user.password = params[:@user][:password]
-         user.save
-         respond_to do |format|
-           format.html { redirect_to user_index_path(:id=> session[:current_user_id])}
-           format.json { head :no_content }
-         end
-       else
-         flash[:admin_modify_password_notice]="两次密码输入的不一致，请重新输入!"
-         flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
-         redirect_to
-       end
-     end
   end
 
   def customer_check
@@ -229,6 +180,68 @@ class UserController < ApplicationController
       else
         format.json {render :json=> true}
       end
+    end
+  end
+
+  def bid_list
+    if session[:current_user_id] == nil && session[:current_user] == nil
+      redirect_to action:'login_page'
+    else
+      name = User.find(session[:current_user_id]).name
+      flash[:notice2]= "你好," + name
+      if params[:page]==nil
+        @i=(params[:page].to_i)*10+1
+      else
+        @i= (params[:page].to_i-1)*10+1
+      end
+      @bids= Bid.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>params[:name])
+    end
+  end
+
+  def sign_up_list
+    if session[:current_user_id] == nil && session[:current_user] ==nil
+      redirect_to action:'login_page'
+    else
+      name = User.find(session[:current_user_id]).name
+      flash[:notice2]= "你好," + name
+      if params[:page]==nil
+        @i=(params[:page].to_i)*10+1
+      else
+        @i= (params[:page].to_i-1)*10+1
+      end
+      @sign_ups= SignUp.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>params[:name])
+    end
+  end
+
+  def bid_detail_list
+    if session[:current_user_id] == nil && session[:current_user] ==nil
+      redirect_to action:'login_page'
+    else
+      name = User.find(session[:current_user_id]).name
+      flash[:notice2]= "你好," + name
+      if params[:page]==nil
+        @i=(params[:page].to_i)*10+1
+      else
+        @i= (params[:page].to_i-1)*10+1
+      end
+      @bid_ups= BidUp.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>params[:name],:bid_name=>params[:bid_name])
+      result = BidResult.where(:activity=>params[:name],:bid_name=>params[:bid_name],:user=>session[:current_user])
+      if result.empty?
+        @message2 = '活动正在进行中......'
+      else
+        if result[0][:price] == -1
+          @message2 = '本次竞价无人胜出！'
+        else
+          @message1 = '获胜者:'+result[0][:name]
+          @message2 = '出价:'+ result[0][:price].to_s
+          @message3 = '手机号:'+result[0][:phone]
+        end
+      end
+      bid_statistics = @bid_ups.select(:price).group(:price)
+      bid_statistics.each do |bs|
+          bs[:price_number] = @bid_ups.where(:price=>bs.price).length
+      end
+      @bid_statistics = bid_statistics
     end
   end
 

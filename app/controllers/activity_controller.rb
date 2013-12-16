@@ -23,8 +23,14 @@ class ActivityController < ApplicationController
        BidUp.delete_all(:user => params[:_json][0][0][:user])
        bid_ups = params[:_json][3]
        bid_ups.each do |bu|
-         bid_up= BidUp.new(:name=>bu[:name],:phone=>bu[:phone],:activity=>bu[:activity],:bid_name=>bu[:bid_name],:price=>bu[:price],:user=>bu[:user])
+         bid_up= BidUp.new(:name=>bu[:name],:phone=>bu[:phone],:activity=>bu[:activity],:bid_name=>bu[:bid_name],:price=>bu[:price].to_i,:user=>bu[:user])
          bid_up.save
+       end
+       BidResult.delete_all(:user => params[:_json][0][0][:user])
+       bid_results = params[:_json][4]
+       bid_results.each do |b_r|
+         bid_result = BidResult.new(:activity=>b_r[:activity],:bid_name=>b_r[:name],:name=>b_r[:suc_person],:phone=>b_r[:phone],:price=>b_r[:price].to_i,:user=>b_r[:user])
+         bid_result.save
        end
        respond_to do |f|
          f.json{render :json=>true}

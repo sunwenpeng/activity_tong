@@ -38,10 +38,6 @@ Activity.GetUserActivityEnrollInfo = function(){
     return _.flatten(_.map(name_array,function(ob){var user_enroll=Activity.GetActivityEnrollInfo(ob); return _.map(user_enroll,function(obe){obe.activity=ob;obe.user=localStorage.current_user;return obe;})}))
 }
 
-//Activity.addActivity =function(activity_name){
-//    return _.map(Activity.GetActivityEnrollInfo(activity_name),function(ob){ob.activity= activity_name})
-//}
-
 Activity.GetActivityEnrollInfo = function(activity_name){
     return JSON.parse(localStorage.getItem(activity_name))  ;
 }

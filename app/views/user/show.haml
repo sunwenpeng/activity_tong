@@ -5,17 +5,19 @@
     - if flash[:notice2]
       =flash[:notice2]
     = link_to '退出','logout', :style => 'color:blue'
--if User.find(session[:current_user_id]).name != 'admin'
+-if session[:current_user]!='admin'
   %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
     %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
       活动信息
--if User.find(session[:current_user_id]).name == 'admin'
+    %div(class = "btn btn-default" style="margin-right:6px;float:right;margin-top:4px;font-size:18px;height:38px")
+      =link_to_if(@current_bid!=nil,"同步展示",'login_page')
+-if session[:current_user]== 'admin'
   %div(style="padding-top:3px;margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
     %div(style="width:80px;margin-left:10px;float:left;margin-top:10px;font-size:18px")
       用户管理
     %div(style='')
       =link_to "添加用户", 'admin_add_new_user', :class => "btn btn-default"
--if User.find(session[:current_user_id]).name == 'admin'
+-if session[:current_user]=='admin'
   %div(style="margin-left:10%;width:80%;")
     %table(class="table table-hover" style="margin-top:0px" )
       %thead
@@ -27,20 +29,22 @@
           %th(style="text-align:center")
             操作
       %tbody(style="text-align:center")
-        - i = (params[:page].to_i)*10+1
-        - @user.each do |u|
+        - i = @i
+        - @users.each do |u|
           %tr
             %td
               = i
               -i = i+1
             %td
-              = u.name
+              = link_to u.name ,show_user_path(:user_name=>u.name) ,:style => 'color:blue'
             %td(style="font-color:red" )
               %span(style="font-color:red" )
                 =link_to '删除',u, :method=>:delete,data:{confirm:'Are you sure?'}
               %span(style="font-color:red")
                 =link_to '修改密码', admin_url(id:u.id)
--if User.find(session[:current_user_id]).name != 'admin'
+%div(style="margin-right:50px;font-size:20px;float:right")
+  =will_paginate @users,{:previous_label =>'上一页',:next_label => '下一页'}
+-if session[:current_user]!='admin'
   %div(style="margin-left:10%;width:80%;")
     %table(class="table table-hover" style="margin-top:0px" )
       %thead
@@ -54,17 +58,18 @@
           %th(style="text-align:center")
             竞价次数
       %tbody(style="text-align:center")
-        - i = (params[:page].to_i)*10+1
+        - i = @i
         - @activities.each do |a|
           %tr
             %td
               = i
               -i = i+1
             %td
-              = link_to a.name
+              = link_to a.name , bids_path(name:a.name)
             %td
-              = (SignUp.where(:user=>User.find(session[:current_user_id]).name,:activity=>a[:name])).length
+              = link_to (SignUp.where(:user=> params[:name]||session[:current_user],:activity=>a[:name])).length ,sign_ups_path(:name=>a[:name])
             %td
-              = Bid.where(:user=>User.find(session[:current_user_id]).name,:activity=>a[:name]).length
+              = link_to Bid.where(:user=> params[:name]||session[:current_user],:activity=>a[:name]).length , bids_path(:name=>a.name)
 %div(style="margin-right:50px;font-size:20px;float:right")
-  =will_paginate @user,{:previous_label =>'上一页',:next_label => '下一页'}
+  =will_paginate @activities,{:previous_label =>'上一页',:next_label => '下一页'}
+

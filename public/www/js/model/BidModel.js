@@ -55,6 +55,11 @@ Bid.GetBidInfoArrayNew = function () {
     return bid_info_array_new;
 }
 
+Bid.GetUserBidResults = function(){
+    var bids = _.where(Bid.GetUserBids(),{status:'已结束'});
+    return _.map(bids,function(ob){var bid_info=JSON.parse(localStorage.getItem(ob.activity+ob.name));var index=Bid.BidPriceResultIndex(bid_info);if(index==-1){ob.suc_person = '';ob.phone='';ob.price=-1;return ob;}else{ob.suc_person=bid_info[index].name;ob.phone=bid_info[index].phone;ob.price=bid_info[index].price;return ob;}})
+}
+
 Bid.SetBidSuccessPersonInfo = function () {
     var bid_success_person_index = Bid.BidPriceResultIndex(bid_info_array_new);
     if (bid_success_person_index != -1) {
