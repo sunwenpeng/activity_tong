@@ -1,0 +1,22 @@
+%meta(http-equiv="refresh" content="3")
+%div(style="margin-left:0%;background-color:#cccccc;text-align:center;padding-top:20px;padding-bottom:20px;" )
+  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:40px;margin-bottom:8px" )=@info1
+  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:30px" )=@info2
+  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )=@info3
+  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )=@info4
+  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )=@info5
+-if @bid[:status] == 'biding'
+  %table(class="table table-hover" style="margin-top:0px;" )
+    %thead
+      %tr
+        %th(style="text-align:center")
+          姓名
+        %th(style="text-align:center")
+          电话
+    %tbody(style="text-align:center")
+      - @bid_ups.each do |bid_up|
+        %tr
+          %td
+            = bid_up.name
+          %td
+            = bid_up.phone

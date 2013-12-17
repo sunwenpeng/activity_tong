@@ -1,4 +1,4 @@
-function BidSignUpController($scope, $navigate) {
+function BidSignUpController($scope, $navigate,$http) {
     $scope.turn_to_bid_list_page = function () {
         $navigate.go("/BidList");
         Bid.SetBidName(null);
@@ -13,6 +13,7 @@ function BidSignUpController($scope, $navigate) {
                 Bid.SetBidSignUpChecked(true);
                 Bid.BidStatusChange();
                 Bid.SetBidingName("null")
+                BidInfo.updateInfo($http);
                 $navigate.go('/BidResult')
                 $scope.end_button_choice = false ;
             }
@@ -32,6 +33,7 @@ function BidSignUpController($scope, $navigate) {
 
             $scope.show_more_button = (Bid.GetBidInfoArrayNew()).length > 1 ? true:false      ;
         }
+        BidInfo.updateInfo($http);
     }
 
     $scope.data_init_bid();

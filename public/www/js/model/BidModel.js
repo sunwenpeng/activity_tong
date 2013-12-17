@@ -61,12 +61,12 @@ Bid.GetUserBidResults = function(){
 }
 
 Bid.SetBidSuccessPersonInfo = function () {
+    var bid_info_array_new = Bid.GetBidInfoArrayNew();
     var bid_success_person_index = Bid.BidPriceResultIndex(bid_info_array_new);
     if (bid_success_person_index != -1) {
         localStorage.setItem("竞价成功人信息", JSON.stringify(bid_info_array_new[bid_success_person_index]))
     }
     else{
-        var bid_info_array_new = Bid.GetBidInfoArrayNew();
         localStorage.setItem("竞价成功人信息",JSON.stringify([]));
     }
 }

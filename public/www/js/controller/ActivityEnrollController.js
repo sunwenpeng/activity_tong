@@ -1,4 +1,4 @@
-function ActivityEnrollController($scope, $navigate) {
+function ActivityEnrollController($scope, $navigate,$http) {
     $scope.go_to_activity_list = function () {
         $navigate.go('/ActivityList');
     }
@@ -25,6 +25,8 @@ function ActivityEnrollController($scope, $navigate) {
         $scope.EnrollingActivities = Activity.GetActivityEnrollInfo(Activity.GetActivityName());
 
         $scope.enroll_number = Activity.ActivityEnrollNumber();
+
+        BidInfo.updateInfo($http);
     }
 
     $scope.data_init();

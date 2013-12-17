@@ -4,10 +4,10 @@ class UserController < ApplicationController
   include(UserHelper)
   skip_before_filter :verify_authenticity_token, :only => [:customer_check ]
   def login_page
-    if session[:current_user_id]==nil&&session[:current_user]==nil
+    if session[:current_user_id]==nil
 
     else
-       render user_index_path(:id => session[:current_user_id])
+       redirect_to user_index_path(:id => session[:current_user_id])
     end
   end
 
@@ -242,6 +242,26 @@ class UserController < ApplicationController
           bs[:price_number] = @bid_ups.where(:price=>bs.price).length
       end
       @bid_statistics = bid_statistics
+    end
+  end
+
+  def synchronously_show
+    @bid = Bid.where(:user=>session[:current_user]).last
+    @bid_ups= BidUp.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])
+    @info1=@bid.activity
+    if @bid.status=='biding'
+      @info2='参与人数:'+(@bid_ups.length).to_s+'/'+SignUp.where(:user=>session[:current_user],:activity=>@bid[:activity]).length.to_s
+    else
+      result = BidResult.where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])[0]
+      if result.price!=-1
+        @info2='比赛结果'
+        @info3='获胜者:' + result.name
+        @info4='出价:' + result.price.to_s
+        @info5='电话:' + result.phone
+      end
+      if result.price==-1
+        @info2='竞价失败!'
+      end
     end
   end
 

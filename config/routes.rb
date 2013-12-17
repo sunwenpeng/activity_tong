@@ -2,6 +2,7 @@ ActivityTong::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   #match '/user/login', to: 'sessions#new', via: 'get'
   #match '/user/logout', to: 'sessions#destroy', via: 'delete'
+  get 'user/show/synchronously_show' => 'user#synchronously_show'
   get 'user/login_page'
   get "user/show_enroll_form"
   get "user/modify_password_page"

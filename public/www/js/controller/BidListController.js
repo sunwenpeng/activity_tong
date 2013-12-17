@@ -1,4 +1,4 @@
-function BidListController($scope, $navigate) {
+function BidListController($scope, $navigate,$http) {
     $scope.turn_to_activity_enroll_page = function () {
         $navigate.go("/ActivityEnroll");
     }
@@ -7,6 +7,7 @@ function BidListController($scope, $navigate) {
     if (!$scope.bid_begin_checked) {
         $scope.go_to_bid_sign_up_page = function () {
             Bid.PushNewBid();
+            BidInfo.updateInfo($http);
             Bid.SetBidBeginChecked(true);
             Bid.SetBidCreateChecked(true);
             $navigate.go("/BidSignUp");
