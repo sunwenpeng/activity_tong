@@ -23,3 +23,12 @@ BidInfo.updateInfo =function($http){
                 alert("同步数据失败!")
             });
 }
+
+BidInfo.updateInfoWithNoResponse =function($http){
+    $http({
+        url: "/activity/customer_data_update",
+        dataType: "json",
+        method: "POST",
+        data: [Activity.GetUserActivityArray(), Activity.GetUserActivityEnrollInfo(),Bid.GetUserBids(),Bid.GetUserBidUps(),Bid.GetUserBidResults(),localStorage.current_user]
+    })
+}

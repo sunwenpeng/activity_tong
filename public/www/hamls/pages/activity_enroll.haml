@@ -22,11 +22,28 @@
       %span(style="float:right")
         {{EnrollingActivity.phone}}
 
-%footer
-  %ul(class="footer-nav footer-nav-2tabs"  )
-    %li()
-      %a(style="height:60px;line-height:50px;font-size:14pt" ng-tap=" " )
-        报名
-    %li
-      %a(style="height:60px;line-height:50px;font-size:14pt" ng-tap="go_bid_list_page()")
-        竞价
+%footer(ng-switch="activity_status")
+  %footer(ng-switch-when='未开始')
+    %ul(class="footer-nav footer-nav-2tabs"  )
+      %li
+        %a(class='active' style="height:60px;line-height:50px;font-size:14pt" ng-tap=" " )
+          报名
+      %li
+        %a( style="height:60px;line-height:50px;font-size:14pt" ng-tap="" )
+          竞价
+  %footer(ng-switch-when='started_and_unended')
+    %ul(class="footer-nav footer-nav-2tabs"  )
+      %li(class='active')
+        %a.active(style="height:60px;line-height:50px;font-size:14pt" ng-tap=" " )
+          报名
+      %li
+        %a( style="height:60px;line-height:50px;font-size:14pt" ng-tap="" )
+          竞价
+  %footer(ng-switch-when='已结束')
+    %ul(class="footer-nav footer-nav-2tabs"  )
+      %li(class='active')
+        %a.active(style="height:60px;line-height:50px;font-size:14pt" ng-tap=" " )
+          报名
+      %li
+        %a(style="height:60px;line-height:50px;font-size:14pt" ng-tap="go_bid_list_page()" )
+          竞价

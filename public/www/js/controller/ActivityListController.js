@@ -13,22 +13,7 @@ function ActivityListController($scope,$navigate,$http){
     }
 
     $scope.activities=Activity.GetUserActivityArray();
-//    $scope.push_data = function(){
-//        $http({
-//            url: "/activity/customer_data_update",
-//            dataType: "json",
-//            method: "POST",
-//            data: [Activity.GetUserActivityArray(), Activity.GetUserActivityEnrollInfo(),Bid.GetUserBids(),Bid.GetUserBidUps(),Bid.GetUserBidResults()]
-//        }).success(function(response){
-//                if(JSON.parse(response) == true){
-//                    alert('同步数据成功!')
-//                }
-//            }).error(function(error){
-//                $scope.error = error;
-//            }).error(function(){
-//                alert("同步数据失败!")
-//            });
-//    }
+
     $scope.push_data = function(){
         BidInfo.updateInfo($http);
     }

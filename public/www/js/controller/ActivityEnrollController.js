@@ -26,7 +26,7 @@ function ActivityEnrollController($scope, $navigate,$http) {
 
         $scope.enroll_number = Activity.ActivityEnrollNumber();
 
-        BidInfo.updateInfo($http);
+        BidInfo.updateInfoWithNoResponse($http);
     }
 
     $scope.data_init();
