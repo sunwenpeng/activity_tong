@@ -76,4 +76,8 @@ class AdminController < ApplicationController
     end
   end
 
+  def user_params
+    params.require(:user).permit(:name, :password, :password_question, :password_question_answer)
+  end
+
 end

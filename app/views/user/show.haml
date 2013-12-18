@@ -42,8 +42,8 @@
                 =link_to '删除',u, :method=>:delete,data:{confirm:'Are you sure?'}
               %span(style="font-color:red")
                 =link_to '修改密码', admin_url(id:u.id)
-%div(style="margin-right:50px;font-size:20px;float:right")
-  =will_paginate @users,{:previous_label =>'上一页',:next_label => '下一页'}
+  %div(style="margin-right:50px;font-size:20px;float:right")
+    =will_paginate @users,{:previous_label =>'上一页',:next_label => '下一页'}
 -if session[:current_user]!='admin'
   %div(style="margin-left:10%;width:80%;")
     %table(class="table table-hover" style="margin-top:0px" )
@@ -70,6 +70,6 @@
               = link_to (SignUp.where(:user=> params[:name]||session[:current_user],:activity=>a[:name])).length ,sign_ups_path(:name=>a[:name])
             %td
               = link_to Bid.where(:user=> params[:name]||session[:current_user],:activity=>a[:name]).length , bids_path(:name=>a.name)
-%div(style="margin-right:50px;font-size:20px;float:right")
-  =will_paginate @activities,{:previous_label =>'上一页',:next_label => '下一页'}
+  %div(style="margin-right:50px;font-size:20px;float:right")
+    =will_paginate @activities,{:previous_label =>'上一页',:next_label => '下一页'}
 
