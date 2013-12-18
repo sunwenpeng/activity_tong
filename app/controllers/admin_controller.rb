@@ -1,8 +1,6 @@
 class AdminController < ApplicationController
+  before_action :require_login
   def admin_add_new_user
-    if session[:current_user_id]==nil
-      return redirect_to action:'login_page'
-    end
   end
 
   def adminAddNewUser
@@ -64,4 +62,18 @@ class AdminController < ApplicationController
     session[:current_user] = params[:user_name] ;
     redirect_to 'user/show'
   end
+
+  def logout
+    session[:current_user_id] = nil
+    session[:current_user] = nil
+    redirect_to action:'login_page'
+  end
+
+  private
+  def require_login
+    unless session[:current_user_id]!=nil
+      redirect_to action:'login_page'
+    end
+  end
+
 end

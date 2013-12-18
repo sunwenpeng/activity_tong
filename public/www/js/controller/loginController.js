@@ -6,12 +6,14 @@ function loginController($scope,$navigate,$http){
             method: "POST",
             data: JSON.stringify($scope.person)
         }).success(function(response){
-             if(JSON.parse(response) == false){
+             if(response == false){
                  alert('用户名或密码错误!')
              }
              else{
                 localStorage.current_user = ($scope.person).name
                 $navigate.go('/ActivityList')
+                 localStorage.current_token = response
+                 console.log(response)
              }
             }).error(function(error){
                 $scope.error = error;

@@ -1,20 +1,12 @@
 class UserController < ApplicationController
-  require 'json'
-  respond_to :json
+  before_action :require_login
+  skip_before_action :require_login, only: [:login_page,:login,:enroll,:show_enroll_form,:modify_password_page,:modify_password_question_page,:modify_password_login_page,:customer_check,:answer_check,:user_check,:update]
   include(UserHelper)
   skip_before_filter :verify_authenticity_token, :only => [:customer_check ]
   def login_page
-    if session[:current_user_id]==nil
-
-    else
-       redirect_to user_index_path(:id => session[:current_user_id])
-    end
   end
 
   def show
-    if session[:current_user_id] == nil&&session[:current_user]==nil
-       redirect_to action:'login_page'
-    else
       name = User.find(session[:current_user_id]).name
       flash[:notice2]= "你好," + name
       if params[:page]==nil
@@ -28,7 +20,6 @@ class UserController < ApplicationController
       end
       @activities=Activity.paginate(page:params[:page],per_page:10).where(:create_user=> session[:current_user])
       @current_bid = Bid.where(:user=>session[:current_user],:status=>'biding')[0]
-    end
   end
 
   def login
@@ -102,14 +93,7 @@ class UserController < ApplicationController
 
   end
 
-  def admin_modify_password_page
-    if session[:current_user_id]==nil && session[:current_user] ==nil
-      return redirect_to action:'login_page'
-    end
-  end
 
-  def modify_password
-  end
 
   def update
     if params[:@user][:password_init].empty?
@@ -162,9 +146,6 @@ class UserController < ApplicationController
   end
 
   def destroy
-    if session[:current_user_id]==nil || session[:current_user]== nil
-      return redirect_to action:'login_page'
-    end
     User.delete params[:id]
     respond_to do |format|
       format.html { redirect_to user_index_path(:id=> session[:current_user_id]) }
@@ -173,20 +154,20 @@ class UserController < ApplicationController
   end
 
   def customer_check
-    user= User.where(:name => params[:name] , :password => params[:password])
+    user= User.where(:name => params[:name] , :password => params[:password])[0]
     respond_to do |format|
-      if user.empty?
+      if user.nil?
         format.json {render :json=> false}
       else
-        format.json {render :json=> true}
+        random_number = SecureRandom.hex(10)
+        user[:remember_token] = random_number
+        user.save
+        format.json {render :json=> random_number}
       end
     end
   end
 
   def bid_list
-    if session[:current_user_id] == nil && session[:current_user] == nil
-      redirect_to action:'login_page'
-    else
       name = User.find(session[:current_user_id]).name
       flash[:notice2]= "你好," + name
       if params[:page]==nil
@@ -195,13 +176,9 @@ class UserController < ApplicationController
         @i= (params[:page].to_i-1)*10+1
       end
       @bids= Bid.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>params[:name])
-    end
   end
 
   def sign_up_list
-    if session[:current_user_id] == nil && session[:current_user] ==nil
-      redirect_to action:'login_page'
-    else
       name = User.find(session[:current_user_id]).name
       flash[:notice2]= "你好," + name
       if params[:page]==nil
@@ -210,13 +187,9 @@ class UserController < ApplicationController
         @i= (params[:page].to_i-1)*10+1
       end
       @sign_ups= SignUp.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>params[:name])
-    end
   end
 
   def bid_detail_list
-    if session[:current_user_id] == nil && session[:current_user] ==nil
-      redirect_to action:'login_page'
-    else
       name = User.find(session[:current_user_id]).name
       flash[:notice2]= "你好," + name
       if params[:page]==nil
@@ -242,7 +215,6 @@ class UserController < ApplicationController
           bs[:price_number] = @bid_ups.where(:price=>bs.price).length
       end
       @bid_statistics = bid_statistics
-    end
   end
 
   def synchronously_show
@@ -276,5 +248,11 @@ class UserController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(:name, :password, :password_question, :password_question_answer)
+  end
+
+  def require_login
+     unless session[:current_user_id]!=nil
+         redirect_to action:'login_page'
+     end
   end
 end

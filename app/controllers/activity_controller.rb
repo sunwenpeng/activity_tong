@@ -1,4 +1,5 @@
 class ActivityController < ApplicationController
+  before_action :require_token
   skip_before_filter :verify_authenticity_token, :only => [:customer_data_update]
   def customer_data_update
     if params[:_json]!= nil
@@ -41,5 +42,12 @@ class ActivityController < ApplicationController
       end
     end
   end
-
+  private
+  def require_token
+     unless params[:token] == User.find_by(name:params[:_json][5])[:remember_token]
+        respond_to do |f|
+          f.json{render :json => false}
+        end
+     end
+  end
 end

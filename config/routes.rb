@@ -1,7 +1,5 @@
 ActivityTong::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
-  #match '/user/login', to: 'sessions#new', via: 'get'
-  #match '/user/logout', to: 'sessions#destroy', via: 'delete'
   get 'user/show/synchronously_show' => 'user#synchronously_show'
   get 'user/login_page'
   get "user/show_enroll_form"
@@ -16,16 +14,14 @@ ActivityTong::Application.routes.draw do
   get 'user/show/:id' => 'user#show', :as => 'user_index'
   get 'user/bid_list'
   get 'user/show/:id/:name' => 'user#bid_list' ,:as => 'bids'
-
   get 'user/show/:id/:name/sign_up_list' => 'user#sign_up_list', :as =>'sign_ups'
   get 'user/show/:id/:name/:bid_name' => 'user#bid_detail_list' , :as => 'bid_detail'
-
+  get 'user/admin_show_user/:id/logout' => 'user#logout'
   get 'user/admin_show_user/:id/:user_name' => 'user#show' ,:as=> 'show_user'
+
 
   post 'user/customer_check'
   post 'activity/customer_data_update'
-
-  #match 'user/show/:id/:user_name'=> 'admin#show_user_page' ,:via=>:post, :as=> 'show_user'
 
   match 'user/show/:id/admin_modify_password_page' => 'admin#edit', :via=> :post,:as=>'admin'
   match 'user/delete/:id' =>'user#destroy',:via=>:delete,:as =>'user'
