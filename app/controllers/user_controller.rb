@@ -167,20 +167,6 @@ class UserController < ApplicationController
     end
   end
 
-  def customer_check
-    user= User.where(:name => params[:name] , :password => params[:password])[0]
-    respond_to do |format|
-      if user.nil?
-        format.json {render :json=> false}
-      else
-        random_number = SecureRandom.hex(10)
-        user[:remember_token] = random_number
-        user.save
-        format.json {render :json=> random_number}
-      end
-    end
-  end
-
   def bid_list
       name = User.find(session[:current_user_id]).name
       flash[:notice2]= "你好," + name
@@ -251,6 +237,8 @@ class UserController < ApplicationController
       @info2='竞价失败!'
     end
   end
+
+
 
   private
   # Use callbacks to share common setup or constraints between actions.

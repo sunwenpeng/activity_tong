@@ -20,8 +20,8 @@ ActivityTong::Application.routes.draw do
   get 'user/admin_show_user/:id/:user_name' => 'user#show' ,:as=> 'show_user'
 
 
-  post 'user/customer_check'
-  post 'activity/customer_data_update'
+  post 'phone_customer/customer_check'
+  post 'phone_customer/customer_data_update'
 
   match 'user/show/:id/admin_modify_password_page' => 'admin#edit', :via=> :post,:as=>'admin'
   match 'user/delete/:id' =>'user#destroy',:via=>:delete,:as =>'user'
@@ -31,7 +31,6 @@ ActivityTong::Application.routes.draw do
   match "/user/modify_password_question_page" => "user#answer_check", :via=> :post
   match "/user/modify_password_page" => "user#update", :via=> :post
   match '/user/show/admin_add_new_user' => 'admin#adminAddNewUser', :via => :post
-  #match '/user/show/:id/:name/bid_list' => 'user#'
 
 
 

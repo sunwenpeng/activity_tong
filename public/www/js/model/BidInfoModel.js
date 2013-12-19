@@ -11,12 +11,12 @@ BidInfo.prototype.pro = function(){
 
 BidInfo.updateInfo =function($http){
         $http({
-            url: "/activity/customer_data_update",
+            url: "/phone_customer/customer_data_update",
             dataType: "json",
             method: "POST",
             data: {'_json':[Activity.GetUserActivityArray(), Activity.GetUserActivityEnrollInfo(),Bid.GetUserBids(),Bid.GetUserBidUps(),Bid.GetUserBidResults(),localStorage.current_user],'token':localStorage.current_token}
         }).success(function(response){
-                if(JSON.parse(response) == true){
+                if(response == 'true'){
                     alert('同步数据成功!')
                 }
             }).error(function(){
@@ -26,7 +26,7 @@ BidInfo.updateInfo =function($http){
 
 BidInfo.updateInfoWithNoResponse =function($http){
     $http({
-        url: "/activity/customer_data_update",
+        url: "/phone_customer/customer_data_update",
         dataType: "json",
         method: "POST",
         data: {'_json':[Activity.GetUserActivityArray(), Activity.GetUserActivityEnrollInfo(),Bid.GetUserBids(),Bid.GetUserBidUps(),Bid.GetUserBidResults(),localStorage.current_user],'token':localStorage.current_token}
