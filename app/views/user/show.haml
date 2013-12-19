@@ -10,7 +10,7 @@
     %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
       活动信息
     %div(class = "btn btn-default" style="margin-right:6px;float:right;margin-top:4px;font-size:18px;height:38px;height:80%;padding-top:4px")
-      =link_to_if(@current_bid!=nil,"同步展示",'synchronously_show')
+      =link_to_if(@current_bid!=nil,"同步展示",'synchronously_show',:target=>'_blank')
 -if session[:current_user]== 'admin'
   %div(style="padding-top:3px;margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
     %div(style="width:80px;margin-left:10px;float:left;margin-top:10px;font-size:18px")
