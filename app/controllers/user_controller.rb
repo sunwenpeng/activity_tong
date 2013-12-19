@@ -67,7 +67,7 @@ class UserController < ApplicationController
   end
 
   def password_empty_check
-    if params[:user][:password_init].empty?
+    if params[:user][:password].empty?
       flash[:notice1] = "请输入密码!"
       return render action: 'show_enroll_form'
     end
@@ -75,7 +75,7 @@ class UserController < ApplicationController
   end
 
   def password_same_check
-    if params[:user][:password_init]!= params[:user][:password]
+    if params[:user][:password]!= params[:user][:password_confirmation]
       flash[:notice1] = "两次输入的密码不一样！"
       return render action: 'show_enroll_form'
     end
@@ -222,7 +222,7 @@ class UserController < ApplicationController
     if @bid.status=='biding'
       return @info2='参与人数:'+(@bid_ups.length).to_s+'/'+SignUp.where(:user=>session[:current_user],:activity=>@bid[:activity]).length.to_s
     end
-    set_bid_ended_inf
+    set_bid_ended_info
   end
 
   def set_bid_ended_info
@@ -247,7 +247,7 @@ class UserController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :password, :password_question, :password_question_answer)
+    params.require(:user).permit(:name, :password, :password_confirmation, :password_question, :password_question_answer)
   end
 
   def require_login
