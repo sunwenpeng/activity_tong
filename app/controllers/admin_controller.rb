@@ -20,7 +20,7 @@ class AdminController < ApplicationController
   end
 
   def user_password_check
-    if params[:user][:password_init].empty?
+    if params[:user][:password].empty?
       flash[:add_error_notice] = "请输入密码!"
       return render action: 'admin_add_new_user'
     end
@@ -28,7 +28,7 @@ class AdminController < ApplicationController
   end
 
   def user_password_same_check
-    if params[:user][:password_init]!= params[:user][:password]
+    if params[:user][:password]!= params[:user][:password_confirmation]
       flash[:add_error_notice] = "两次输入的密码不一样！"
       return render action: 'admin_add_new_user'
     end
@@ -50,7 +50,7 @@ class AdminController < ApplicationController
 
   def edit
     user = User.find(params[:id])
-    if params[:@user][:password_init].empty?
+    if params[:@user][:password].empty?
       flash[:admin_modify_password_notice]="密码不能为空"
       flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
       return redirect_to
@@ -59,7 +59,7 @@ class AdminController < ApplicationController
   end
 
   def edit_password_check(user)
-    if params[:@user][:password_init] != params[:@user][:password]
+    if params[:@user][:password] != params[:@user][:password_confirmation]
       flash[:admin_modify_password_notice]="两次密码输入的不一致，请重新输入!"
       flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
       return redirect_to
@@ -69,6 +69,7 @@ class AdminController < ApplicationController
 
   def update_users_password(user)
     user.password = params[:@user][:password]
+    user.password_confirmation = params[:@user][:password_confirmation]
     user.save
     respond_to do |format|
       format.html { redirect_to user_index_path(:id=> session[:current_user_id])}
@@ -89,7 +90,7 @@ class AdminController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :password, :password_question, :password_question_answer)
+    params.require(:user).permit(:name, :password, :password_confirmation, :password_question, :password_question_answer)
   end
 
 end

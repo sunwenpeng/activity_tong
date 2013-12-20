@@ -5,7 +5,7 @@
   %div(style="margin-bottom:3%;font-weight:bold" )
     新用户注册
   %div(style="color:blue;text-align:right;margin-bottom:1%" )
-    = link_to '用户登录', 'login_page'
+    = link_to '用户登录',:controller=> 'user',:action=> 'login_page'
   =form_for :user , html:{:class => 'form-horizontal'} do |f|
     %fieldset
       %div(class="form-group" style="height:40px" )

@@ -13,15 +13,15 @@ class PhoneCustomerController < ApplicationController
   end
 
   def customer_check
-    user= User.where(:name => params[:name] , :password => params[:password])[0]
+    user= User.find_by_name(params[:name])
     respond_to do |format|
-      if user.nil?
-        format.json {render :json=> false}
-      else
+      if user && user.authenticate(params[:password])
         random_number = SecureRandom.hex(10)
         user[:remember_token] = random_number
         user.save
         format.json {render :json=> random_number}
+      else
+        format.json {render :json=> false}
       end
     end
   end
