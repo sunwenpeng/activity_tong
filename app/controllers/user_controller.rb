@@ -40,7 +40,7 @@ class UserController < ApplicationController
   end
 
   def login
-    user = User.where(:name => params[:@user][:name],:password => params[:@user][:password])
+    user = User.where(:name => params[:@user][:name],:password_digest => params[:@user][:password])
     user_empty_check(user)
   end
 
@@ -89,10 +89,10 @@ class UserController < ApplicationController
       if @user.save
         format.html { redirect_to action: 'login_page'}
         format.json { render action: 'login_page', status: :created, location: @user }
-      else
-        format.html { redirect_to action: 'login_page' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        return
       end
+      format.html { redirect_to action: 'login_page' }
+      format.json { render json: @user.errors, status: :unprocessable_entity }
     end
   end
 
@@ -105,7 +105,7 @@ class UserController < ApplicationController
   end
 
   def update
-    if params[:user][:password_init].empty?
+    if params[:user][:password].empty?
        flash[:modify_password_notice]="密码不能为空"
        return render action:'modify_password_page'
     end
@@ -113,7 +113,7 @@ class UserController < ApplicationController
   end
 
   def update_password_check
-    if params[:user][:password_init] != params[:user][:password]
+    if params[:user][:password] != params[:user][:password_confirmation]
       flash[:modify_password_notice]="两次密码输入的不一致，请重新输入!"
       return render action:'modify_password_page'
     end
@@ -122,7 +122,9 @@ class UserController < ApplicationController
 
   def update_user_password
     user = User.find(session[:user_id])
+    #user = User.new(user_params)
     user.password = params[:user][:password]
+    user.password_confirmation = params[:user][:password_confirmation]
     user.save
     session[:current_user_id] = user.id
     session[:current_user] = user.name
@@ -135,17 +137,19 @@ class UserController < ApplicationController
   def user_check
     if params[:@user][:name].empty?
       flash.now[:notice3] = "账户名不能为空!"
-      render action: 'modify_password_login_page'
-    else
-      if User.where(:name => params[:@user][:name]).empty?
-        flash.now[:notice3] = "账户名不存在!"
-        render action: 'modify_password_login_page'
-      else
-        user = User.where(:name => params[:@user][:name])
-        session[:user_id]= user[0].id
-        redirect_to action: 'modify_password_question_page'
-      end
+      return render action: 'modify_password_login_page'
     end
+    modify_password_user_name_check
+  end
+
+  def modify_password_user_name_check
+    if User.where(:name => params[:@user][:name]).empty?
+      flash.now[:notice3] = "账户名不存在!"
+      return render action: 'modify_password_login_page'
+    end
+      user = User.where(:name => params[:@user][:name])
+      session[:user_id]= user[0].id
+      redirect_to action: 'modify_password_question_page'
   end
 
   def answer_check
