@@ -4,6 +4,9 @@ class UserController < ApplicationController
   include(UserHelper)
   skip_before_filter :verify_authenticity_token, :only => [:customer_check ]
   def login_page
+    if session[:current_user_id]!=nil
+       redirect_to user_index_path(:id=> User.find(session[:current_user_id]).name)
+    end
   end
 
   def show

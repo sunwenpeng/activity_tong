@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
   before_action :require_login
   def admin_add_new_user
+    @current_user = set_user_info
   end
 
   def admin_modify_password_page
@@ -10,6 +11,7 @@ class AdminController < ApplicationController
   def adminAddNewUser
     if params[:user][:name].empty?
       @error_message = 1
+      @current_user = set_user_info
       return render action: 'admin_add_new_user'
     end
     user_name_same_check
@@ -18,7 +20,8 @@ class AdminController < ApplicationController
   def user_name_same_check
     if User.where(:name => params[:user][:name])[0]!=nil
        @error_message = 2
-        return render action: 'admin_add_new_user'
+       @current_user = set_user_info
+       return render action: 'admin_add_new_user'
     end
     user_password_check
   end
@@ -26,6 +29,7 @@ class AdminController < ApplicationController
   def user_password_check
     if params[:user][:password].empty?
       @error_message = 3
+      @current_user = set_user_info
       return render action: 'admin_add_new_user'
     end
     user_password_same_check
@@ -34,6 +38,7 @@ class AdminController < ApplicationController
   def user_password_same_check
     if params[:user][:password]!= params[:user][:password_confirmation]
       @error_message = 4
+      @current_user = set_user_info
       return render action: 'admin_add_new_user'
     end
     add_new_user
