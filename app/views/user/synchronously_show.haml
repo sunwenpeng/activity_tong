@@ -1,13 +1,13 @@
 %meta(http-equiv="refresh" content="3")
 %div(style="margin-left:0%;background-color:#cccccc;text-align:center;padding-top:20px;padding-bottom:20px;" )
-  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:40px;margin-bottom:8px" )=@info1
+  %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:40px;margin-bottom:8px" )=@activity_number
   -if @bid.status=='biding'
-    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:30px" )='参与人数:'+@info2
+    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:30px" )='参与人数:'+@bid_number
   -if @bid_success == true
     %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:30px" )='比赛结果'
-    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )='获胜者:' +@info3
-    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )='出价:' + @info4
-    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )='电话:' +@info5
+    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )='获胜者:' +@bid_suc_person
+    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )='出价:' + @bid_suc_price
+    %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:15px" )='电话:' +@bid_suc_phone
   -if @bid_success == false
     %div(style="margin-left:30%;width:40%;padding-top:8px;font-size:30px" )='竞价失败!'
 -if @bid[:status] == 'biding'

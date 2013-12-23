@@ -17,18 +17,18 @@
     %span
       = params[:bid_name]
 %div(style="margin-left:10%;margin-top:-50px;width:80%;background-color:#cccccc;height:100px;text-align:center;font-size:20px" )
-  - if @message1
-    %div(style="margin-left:30%;width:40%;margin-top:5%;height:30%;padding-top:8px" )='获胜者:'+@message1
-  - if @message1.nil?
+  - if @bid_suc_person
+    %div(style="margin-left:30%;width:40%;margin-top:5%;height:30%;padding-top:8px" )='获胜者:'+@bid_suc_person
+  - if @bid_suc_person.nil?
     %div(style="margin-left:30%;width:40%;margin-top:5%;height:30%;padding-top:8px" )
-  - if @message2 == 1
+  - if @bid_result == 'biding'
     %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )='活动正在进行中......'
-  - if @message2 == 2
+  - if @bid_result == false
     %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )='本次竞价无人胜出！'
-  - if @message2 !=1 && @message2!= 2
-    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )= '出价:'+@message2
-  - if @message3
-    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )= '手机号:'+@message3
+  - if @bid_result == true
+    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )= '出价:'+@bid_suc_price
+  - if @bid_suc_phone
+    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )= '手机号:'+@bid_suc_phone
 %div(style="margin-top:1%;margin-left:10%;width:80%;")
   %ul(class="nav nav-tabs" id="myTab")
     %li(class="active"style="width:50%;text-align:center")

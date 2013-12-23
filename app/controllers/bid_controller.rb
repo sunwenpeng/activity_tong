@@ -20,22 +20,23 @@ class BidController < ApplicationController
 
   def set_bid_message(result)
     if result.empty?
-      return @message2 = 1
+      return @bid_result = 'biding'
     end
     result_price_check(result)
   end
 
   def result_price_check(result)
     if result[0][:price] == -1
-      return @message2 = 2
+      return @bid_result = false
     end
     set_suc_message(result)
   end
 
   def set_suc_message(result)
-    @message1 = result[0][:name]
-    @message2 = result[0][:price].to_s
-    @message3 = result[0][:phone]
+    @bid_result = true
+    @bid_suc_person = result[0][:name]
+    @bid_suc_price = result[0][:price].to_s
+    @bid_suc_phone = result[0][:phone]
   end
 
 end

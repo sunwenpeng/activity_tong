@@ -56,9 +56,9 @@ class UserController < ApplicationController
   def synchronously_show
     @bid = Bid.where(:user=>session[:current_user]).last
     @bid_ups= BidUp.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])
-    @info1=@bid.activity
+    @activity_number=@bid.activity
     if @bid.status=='biding'
-      return @info2=(@bid_ups.length).to_s+'/'+SignUp.where(:user=>session[:current_user],:activity=>@bid[:activity]).length.to_s
+      return @bid_number=(@bid_ups.length).to_s+'/'+SignUp.where(:user=>session[:current_user],:activity=>@bid[:activity]).length.to_s
     end
     set_bid_ended_info
   end
@@ -67,9 +67,9 @@ class UserController < ApplicationController
     @result = BidResult.where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])[0]
     if @result.price!=-1
       @bid_success=true
-      @info3= @result.name
-      @info4=@result.price.to_s
-      @info5= @result.phone
+      @bid_suc_person= @result.name
+      @bid_suc_price=@result.price.to_s
+      @bid_suc_phone= @result.phone
     end
     if @result.price==-1
       @bid_success=false
