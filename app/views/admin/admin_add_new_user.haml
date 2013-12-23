@@ -2,8 +2,7 @@
   %h1(style="width:1150px" )
     活动通
   %div(style="line-height:38px;width:100px;margin-left:1200px;")
-    - if flash[:notice2]
-      =flash[:notice2]
+    ='你好,' + @current_user+'!'
     = link_to '退出','logout', :style => 'color:blue'
 %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
   %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
@@ -39,8 +38,17 @@
           忘记密码答案
         %div(class="col-sm-10" style="width:400px")
           =f.text_field :password_question_answer,:class=>"form-control",:placeholder=>"请输入忘记密码答案"
-      - if flash[:add_error_notice]
+      - if @error_message == 1
         %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
-          =flash[:add_error_notice]
+          = "请输入用户名!"
+      - if @error_message == 2
+        %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
+          = "用户名已存在!"
+      - if @error_message == 3
+        %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
+          = "请输入密码!"
+      - if @error_message == 4
+        %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
+          = "两次输入的密码不一样！"
       %button(type="submit" class="btn btn-primary btn-lg btn-block action" style="width:50%;margin-left:25%;margin-top:10px" )
         注册

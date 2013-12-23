@@ -2,8 +2,7 @@
   %h1(style="width:1150px" )
     活动通
   %div(style="line-height:38px;width:100px;margin-left:1200px;")
-    - if flash[:notice2]
-      =flash[:notice2]
+    ='你好,' + @current_user+'!'
     = link_to '退出','logout', :style => 'color:blue'
 -if session[:current_user]!='admin'
   %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
@@ -29,7 +28,7 @@
           %th(style="text-align:center")
             操作
       %tbody(style="text-align:center")
-        - i = @i
+        - i = @count_init
         - @users.each do |u|
           %tr
             %td
@@ -58,7 +57,7 @@
           %th(style="text-align:center")
             竞价次数
       %tbody(style="text-align:center")
-        - i = @i
+        - i = @count_init
         - @activities.each do |a|
           %tr
             %td

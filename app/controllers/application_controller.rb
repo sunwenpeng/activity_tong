@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
     end
     return (params[:page].to_i-1)*10+1
   end
+
+  def set_user_info
+    return  User.find(session[:current_user_id]).name
+  end
 end

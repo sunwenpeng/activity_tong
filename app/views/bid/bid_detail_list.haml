@@ -2,8 +2,7 @@
   %h1(style="width:1150px" )
     活动通
   %div(style="line-height:38px;width:100px;margin-left:1200px;")
-    - if flash[:notice2]
-      =flash[:notice2]
+    ='你好,' + @current_user+'!'
     = link_to '退出','logout', :style => 'color:blue'
 %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
   %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
@@ -18,9 +17,18 @@
     %span
       = params[:bid_name]
 %div(style="margin-left:10%;margin-top:-50px;width:80%;background-color:#cccccc;height:100px;text-align:center;font-size:20px" )
-  %div(style="margin-left:30%;width:40%;margin-top:5%;height:30%;padding-top:8px" )=@message1
-  %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )=@message2
-  %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )=@message3
+  - if @message1
+    %div(style="margin-left:30%;width:40%;margin-top:5%;height:30%;padding-top:8px" )='获胜者:'+@message1
+  - if @message1.nil?
+    %div(style="margin-left:30%;width:40%;margin-top:5%;height:30%;padding-top:8px" )
+  - if @message2 == 1
+    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )='活动正在进行中......'
+  - if @message2 == 2
+    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )='本次竞价无人胜出！'
+  - if @message2 !=1 && @message2!= 2
+    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )= '出价:'+@message2
+  - if @message3
+    %div(style="margin-left:30%;width:40%;height:30%;padding-top:8px" )= '手机号:'+@message3
 %div(style="margin-top:1%;margin-left:10%;width:80%;")
   %ul(class="nav nav-tabs" id="myTab")
     %li(class="active"style="width:50%;text-align:center")
@@ -43,7 +51,7 @@
             %th(style="text-align:center")
               手机号
         %tbody(style="text-align:center")
-          - i = @i
+          - i = @count_init
           - @bid_ups.each do |bid_up|
             %tr
               %td

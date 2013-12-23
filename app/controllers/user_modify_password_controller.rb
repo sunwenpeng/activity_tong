@@ -5,7 +5,7 @@ class UserModifyPasswordController < ApplicationController
 
   def update
     if params[:user][:password].empty?
-      flash[:modify_password_notice]="密码不能为空"
+      flash[:user_modify_password_error] = true
       return render action:'modify_password_page'
     end
     update_password_check
@@ -13,7 +13,7 @@ class UserModifyPasswordController < ApplicationController
 
   def update_password_check
     if params[:user][:password] != params[:user][:password_confirmation]
-      flash[:modify_password_notice]="两次密码输入的不一致，请重新输入!"
+      flash[:user_modify_password_error] = false
       return render action:'modify_password_page'
     end
     update_user_password
@@ -34,7 +34,7 @@ class UserModifyPasswordController < ApplicationController
 
   def user_check
     if params[:@user][:name].empty?
-      flash.now[:notice3] = "账户名不能为空!"
+      @modify_login_error = 1
       return render action: 'modify_password_login_page'
     end
     modify_password_user_name_check
@@ -42,7 +42,7 @@ class UserModifyPasswordController < ApplicationController
 
   def modify_password_user_name_check
     if User.where(:name => params[:@user][:name]).empty?
-      flash.now[:notice3] = "账户名不存在!"
+      @modify_login_error = 2
       return render action: 'modify_password_login_page'
     end
     user = User.where(:name => params[:@user][:name])
@@ -56,7 +56,7 @@ class UserModifyPasswordController < ApplicationController
       session[:user_id]=usr.id
       redirect_to action: 'modify_password_page'
     else
-      flash[:notice5]="忘记密码答案错误"
+      flash[:modify_password_error] = true
       redirect_to
     end
   end

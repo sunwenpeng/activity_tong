@@ -7,9 +7,8 @@ class UserController < ApplicationController
   end
 
   def show
-      name = User.find(session[:current_user_id]).name
-      flash[:notice2]= "你好," + name
-      @i= set_page
+      @current_user=set_user_info
+      @count_init= set_page
       @users =User.paginate(page:params[:page],per_page:10).where(:admin=>false)
       if params[:user_name]
          session[:current_user] = params[:user_name]
@@ -22,8 +21,8 @@ class UserController < ApplicationController
      if user && user.authenticate(params[:@user][:password])
        return go_to_user_index(user)
      end
-     flash[:notice0] = "用户名或密码错误！"
-     redirect_to action: 'login'
+     @login_error = true
+     render action: 'login_page'
   end
 
   def go_to_user_index(user)
@@ -56,21 +55,21 @@ class UserController < ApplicationController
     @bid_ups= BidUp.paginate(page:params[:page],per_page:10).where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])
     @info1=@bid.activity
     if @bid.status=='biding'
-      return @info2='参与人数:'+(@bid_ups.length).to_s+'/'+SignUp.where(:user=>session[:current_user],:activity=>@bid[:activity]).length.to_s
+      return @info2=(@bid_ups.length).to_s+'/'+SignUp.where(:user=>session[:current_user],:activity=>@bid[:activity]).length.to_s
     end
     set_bid_ended_info
   end
 
   def set_bid_ended_info
-    result = BidResult.where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])[0]
-    if result.price!=-1
-      @info2='比赛结果'
-      @info3='获胜者:' + result.name
-      @info4='出价:' + result.price.to_s
-      @info5='电话:' + result.phone
+    @result = BidResult.where(:user=>session[:current_user],:activity=>@bid[:activity],:bid_name=>@bid[:name])[0]
+    if @result.price!=-1
+      @bid_success=true
+      @info3= @result.name
+      @info4=@result.price.to_s
+      @info5= @result.phone
     end
-    if result.price==-1
-      @info2='竞价失败!'
+    if @result.price==-1
+      @bid_success=false
     end
   end
 

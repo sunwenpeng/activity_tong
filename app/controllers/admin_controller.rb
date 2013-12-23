@@ -3,9 +3,13 @@ class AdminController < ApplicationController
   def admin_add_new_user
   end
 
+  def admin_modify_password_page
+    @current_user = set_user_info
+  end
+
   def adminAddNewUser
     if params[:user][:name].empty?
-      flash.now[:add_error_notice] = "请输入用户名!"
+      @error_message = 1
       return render action: 'admin_add_new_user'
     end
     user_name_same_check
@@ -13,7 +17,7 @@ class AdminController < ApplicationController
 
   def user_name_same_check
     if User.where(:name => params[:user][:name])[0]!=nil
-        flash[:add_error_notice] = "用户名已存在!"
+       @error_message = 2
         return render action: 'admin_add_new_user'
     end
     user_password_check
@@ -21,7 +25,7 @@ class AdminController < ApplicationController
 
   def user_password_check
     if params[:user][:password].empty?
-      flash[:add_error_notice] = "请输入密码!"
+      @error_message = 3
       return render action: 'admin_add_new_user'
     end
     user_password_same_check
@@ -29,7 +33,7 @@ class AdminController < ApplicationController
 
   def user_password_same_check
     if params[:user][:password]!= params[:user][:password_confirmation]
-      flash[:add_error_notice] = "两次输入的密码不一样！"
+      @error_message = 4
       return render action: 'admin_add_new_user'
     end
     add_new_user
@@ -51,18 +55,18 @@ class AdminController < ApplicationController
   def edit
     user = User.find(params[:id])
     if params[:@user][:password].empty?
-      flash[:admin_modify_password_notice]="密码不能为空"
-      flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
-      return redirect_to
+      @admin_modify_password_error = 1
+      @current_user= set_user_info
+      return render action: 'admin_modify_password_page'
     end
     edit_password_check(user)
   end
 
   def edit_password_check(user)
     if params[:@user][:password] != params[:@user][:password_confirmation]
-      flash[:admin_modify_password_notice]="两次密码输入的不一致，请重新输入!"
-      flash[:notice2]= "你好," + User.find(session[:current_user_id]).name
-      return redirect_to
+      @current_user= set_user_info
+      @admin_modify_password_error = 2
+      return render action: 'admin_modify_password_page'
     end
     update_users_password(user)
   end

@@ -1,7 +1,7 @@
 class UserEnrollController < ApplicationController
   def enroll_name_check
     if params[:user][:name].empty?
-      flash.now[:notice1] = "请输入用户名!"
+      @enroll_error = 1
       return render action: 'show_enroll_form'
     end
     user_name_check
@@ -9,7 +9,7 @@ class UserEnrollController < ApplicationController
 
   def user_name_check
     if User.where(:name => params[:user][:name])[0]!=nil
-      flash[:notice1] = "用户名已存在!"
+      @enroll_error = 2
       return render action: 'show_enroll_form'
     end
     password_empty_check
@@ -17,7 +17,7 @@ class UserEnrollController < ApplicationController
 
   def password_empty_check
     if params[:user][:password].empty?
-      flash[:notice1] = "请输入密码!"
+      @enroll_error = 3
       return render action: 'show_enroll_form'
     end
     password_same_check
@@ -25,7 +25,7 @@ class UserEnrollController < ApplicationController
 
   def password_same_check
     if params[:user][:password]!= params[:user][:password_confirmation]
-      flash[:notice1] = "两次输入的密码不一样！"
+      @enroll_error = 4
       return render action: 'show_enroll_form'
     end
     enroll_success
@@ -34,13 +34,11 @@ class UserEnrollController < ApplicationController
   def enroll_success
     @user = User.new(user_params)
     @user.save
-    flash[:notice] = "注册成功！请登录"
+    flash[:enroll_success] = true
     respond_to do |format|
-        format.html { redirect_to controller:'user',action: 'login_page'}
+        format.html {redirect_to  controller:'user',action: 'login_page'}
         format.json { render action: 'login_page', status: :created, location: @user }
     end
-      #format.html { redirect_to 'user/login_page' }
-      #format.json { render json: @user.errors, status: :unprocessable_entity }
   end
 
   def enroll
