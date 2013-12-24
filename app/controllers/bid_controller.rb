@@ -40,4 +40,3 @@ class BidController < ApplicationController
   end
 
 end
-#'出价:'+ result[0][:price].to_s

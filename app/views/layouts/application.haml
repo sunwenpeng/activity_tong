@@ -1,0 +1,13 @@
+!!!5
+%html
+  %head
+    %title
+      ActivityTong
+    = stylesheet_link_tag  "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tags
+  %body
+    %header(style="margin-left:20px;margin-top:20px;width:1250px" )
+      %h1(style="margin-top:-10%" )
+        活动通
+    = yield

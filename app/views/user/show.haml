@@ -5,7 +5,7 @@
     ='你好,' + @current_user+'!'
     = link_to '退出','logout', :style => 'color:blue'
 -if session[:current_user]!='admin'
-  %div(style="margin-left:10%;margin-top:50px;width:80%;background-color:#cccccc;height:40px" )
+  %div.bar-head
     %div(style="margin-left:10px;float:left;margin-top:12px;font-size:18px")
       活动信息
     %div(class = "btn btn-default" style="margin-right:6px;float:right;margin-top:4px;font-size:18px;height:38px;height:80%;padding-top:4px")

@@ -1,5 +1,4 @@
 class AdminController < ApplicationController
-  before_action :require_login
   def admin_add_new_user
     @current_user = set_user_info
   end
@@ -90,16 +89,4 @@ class AdminController < ApplicationController
     session[:current_user] = params[:user_name] ;
     redirect_to 'user/show'
   end
-
-  private
-  def require_login
-    unless session[:current_user_id]!=nil
-      redirect_to action:'login_page'
-    end
-  end
-
-  def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation, :password_question, :password_question_answer)
-  end
-
 end

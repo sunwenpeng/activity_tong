@@ -1,8 +1,6 @@
 class UserController < ApplicationController
-  before_action :require_login
-  skip_before_action :require_login, only: [:user_params,:login_page,:login,:enroll,:show_enroll_form,:modify_password_page,:modify_password_question_page,:modify_password_login_page,:customer_check,:answer_check,:user_check,:update]
   include(UserHelper)
-  skip_before_filter :verify_authenticity_token, :only => [:customer_check ]
+  skip_before_filter :verify_authenticity_token, :only => [:customer_check]
   def login_page
     if session[:current_user_id]!=nil
        redirect_to user_index_path(:id=> User.find(session[:current_user_id]).name)
@@ -76,21 +74,4 @@ class UserController < ApplicationController
     end
   end
 
-
-
-  private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_user
-    @user = User.find(params[:id])
-  end
-
-  def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation, :password_question, :password_question_answer)
-  end
-
-  def require_login
-     unless session[:current_user_id]!=nil
-         redirect_to action:'login_page'
-     end
-  end
 end
