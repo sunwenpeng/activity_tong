@@ -9,7 +9,7 @@ class AdminController < ApplicationController
 
   def adminAddNewUser
     if params[:user][:name].empty?
-      @error_message = 1
+      @error_message = 'empty_user'
       @current_user = set_user_info
       return render action: 'admin_add_new_user'
     end
@@ -18,7 +18,7 @@ class AdminController < ApplicationController
 
   def user_name_same_check
     if User.where(:name => params[:user][:name])[0]!=nil
-       @error_message = 2
+       @error_message = 'used_name'
        @current_user = set_user_info
        return render action: 'admin_add_new_user'
     end
@@ -27,7 +27,7 @@ class AdminController < ApplicationController
 
   def user_password_check
     if params[:user][:password].empty?
-      @error_message = 3
+      @error_message = 'empty_password'
       @current_user = set_user_info
       return render action: 'admin_add_new_user'
     end
@@ -36,7 +36,7 @@ class AdminController < ApplicationController
 
   def user_password_same_check
     if params[:user][:password]!= params[:user][:password_confirmation]
-      @error_message = 4
+      @error_message = 'different_password'
       @current_user = set_user_info
       return render action: 'admin_add_new_user'
     end
@@ -59,7 +59,7 @@ class AdminController < ApplicationController
   def edit
     user = User.find(params[:id])
     if params[:@user][:password].empty?
-      @admin_modify_password_error = 1
+      @admin_modify_password_error = 'empty_input'
       @current_user= set_user_info
       return render action: 'admin_modify_password_page'
     end
@@ -69,7 +69,7 @@ class AdminController < ApplicationController
   def edit_password_check(user)
     if params[:@user][:password] != params[:@user][:password_confirmation]
       @current_user= set_user_info
-      @admin_modify_password_error = 2
+      @admin_modify_password_error = 'different_input'
       return render action: 'admin_modify_password_page'
     end
     update_users_password(user)
