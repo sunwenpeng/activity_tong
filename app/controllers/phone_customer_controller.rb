@@ -1,6 +1,6 @@
 class PhoneCustomerController < ApplicationController
   before_action :require_token ,only: [:customer_data_update]
-  skip_before_filter :verify_authenticity_token, only: [:customer_data_update,:customer_check]
+  skip_before_filter :verify_authenticity_token
   def customer_data_update
     Activity.update_user_activities(params)
     SignUp.update_user_sign_ups(params)
