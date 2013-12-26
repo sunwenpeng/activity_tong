@@ -1,6 +1,6 @@
 class PhoneCustomerController < ApplicationController
   before_action :require_token ,only: [:customer_data_update]
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token,
   def customer_data_update
     Activity.update_user_activities(params)
     SignUp.update_user_sign_ups(params)
@@ -28,7 +28,7 @@ class PhoneCustomerController < ApplicationController
 
   private
   def require_token
-    unless params[:token] == User.find_by(name:params[:_json][5])[:remember_token]
+    unless params[:token] == User.find_by(name:params[:user])[:remember_token]
       respond_to do |f|
         f.json{render json: false}
       end

@@ -14,7 +14,9 @@ BidInfo.updateInfo =function($http){
             url: "/phone_customer/customer_data_update",
             dataType: "json",
             method: "POST",
-            data: {'_json':[Activity.GetUserActivityArray(), Activity.GetUserActivityEnrollInfo(),Bid.GetUserBids(),Bid.GetUserBidUps(),Bid.GetUserBidResults(),localStorage.current_user],'token':localStorage.current_token}
+            data: {'activity_info':Activity.GetUserActivityArray(),'sign_ups': Activity.GetUserActivityEnrollInfo(),
+                'bids_info':Bid.GetUserBids(),'bid_ups':Bid.GetUserBidUps(),'bid_results':Bid.GetUserBidResults(),
+                'user':localStorage.current_user,'token':localStorage.current_token}
         }).success(function(response){
                 if(response == 'true'){
                     alert('同步数据成功!')
@@ -29,6 +31,8 @@ BidInfo.updateInfoWithNoResponse =function($http){
         url: "/phone_customer/customer_data_update",
         dataType: "json",
         method: "POST",
-        data: {'_json':[Activity.GetUserActivityArray(), Activity.GetUserActivityEnrollInfo(),Bid.GetUserBids(),Bid.GetUserBidUps(),Bid.GetUserBidResults(),localStorage.current_user],'token':localStorage.current_token}
+        data: {'activity_info':Activity.GetUserActivityArray(),'sign_ups': Activity.GetUserActivityEnrollInfo(),
+            'bids_info':Bid.GetUserBids(),'bid_ups':Bid.GetUserBidUps(),'bid_result':Bid.GetUserBidResults(),
+            'current_user':localStorage.current_user,'token':localStorage.current_token}
     })
 }
