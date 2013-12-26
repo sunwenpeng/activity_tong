@@ -25,16 +25,16 @@
         忘记密码答案
       %div(class="col-sm-10" style="width:400px")
         =f.text_field :password_question_answer,:class=>"form-control",:placeholder=>"请输入忘记密码答案"
-    - if @enroll_error == 1
+    - if @enroll_error == 'empty_name'
       %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
         ="请输入用户名!"
-    - if @enroll_error == 2
+    - if @enroll_error == 'used_name'
       %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
         ="用户名已存在!"
-    - if @enroll_error == 3
+    - if @enroll_error == 'empty_password'
       %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
         ="请输入密码!"
-    - if @enroll_error == 4
+    - if @enroll_error == 'different_password_input'
       %div(style="color:red;background:pink;text-align:center;height:30px;padding-top:6px" )
         ="两次输入的密码不一样！"
     %button(type="submit" class="btn btn-primary btn-lg btn-block action" style="width:50%;margin-left:25%;margin-top:10px" )

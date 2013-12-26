@@ -1,15 +1,15 @@
 class UserEnrollController < ApplicationController
   def enroll_name_check
     if params[:user][:name].empty?
-      @enroll_error = 1
+      @enroll_error = 'empty_name'
       return render action: 'show_enroll_form'
     end
     user_name_check
   end
 
   def user_name_check
-    if User.where(:name => params[:user][:name])[0]!=nil
-      @enroll_error = 2
+    if User.where(name: params[:user][:name])[0]!=nil
+      @enroll_error = 'used_name'
       return render action: 'show_enroll_form'
     end
     password_empty_check
@@ -17,7 +17,7 @@ class UserEnrollController < ApplicationController
 
   def password_empty_check
     if params[:user][:password].empty?
-      @enroll_error = 3
+      @enroll_error = 'empty_password'
       return render action: 'show_enroll_form'
     end
     password_same_check
@@ -25,7 +25,7 @@ class UserEnrollController < ApplicationController
 
   def password_same_check
     if params[:user][:password]!= params[:user][:password_confirmation]
-      @enroll_error = 4
+      @enroll_error = 'different_password_input'
       return render action: 'show_enroll_form'
     end
     enroll_success
@@ -43,11 +43,6 @@ class UserEnrollController < ApplicationController
 
   def enroll
     enroll_name_check
-  end
-  private
-  def user_params
-    params.require(:user).
-        permit(:name, :password, :password_confirmation, :password_question, :password_question_answer)
   end
 end
 

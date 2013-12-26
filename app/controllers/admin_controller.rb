@@ -17,7 +17,7 @@ class AdminController < ApplicationController
   end
 
   def user_name_same_check
-    if User.where(:name => params[:user][:name])[0]!=nil
+    if User.where(name: params[:user][:name])[0]!=nil
        @error_message = 'used_name'
        @current_user = set_user_info
        return render action: 'admin_add_new_user'
@@ -47,10 +47,10 @@ class AdminController < ApplicationController
     @user = User.new(user_params)
     respond_to do |format|
       if @user.save
-        format.html { redirect_to user_index_path(:id=>@user.name)}
+        format.html { redirect_to user_index_path(id:@user.name)}
         format.json { render action: 'show', status: :created, location: @user }
       else
-        format.html { redirect_to user_index_path(:id=>@user.name)}
+        format.html { redirect_to user_index_path(id:@user.name)}
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -80,7 +80,7 @@ class AdminController < ApplicationController
     user.password_confirmation = params[:@user][:password_confirmation]
     user.save
     respond_to do |format|
-      format.html { redirect_to user_index_path(:id=> session[:current_user_id])}
+      format.html { redirect_to user_index_path(id: session[:current_user_id])}
       format.json { head :no_content }
     end
   end

@@ -27,7 +27,7 @@ class UserModifyPasswordController < ApplicationController
     session[:current_user_id] = user.id
     session[:current_user] = user.name
     respond_to do |format|
-      format.html { redirect_to user_index_path(:id =>user.id)}
+      format.html { redirect_to user_index_path(id:user.id)}
       format.json { head :no_content }
     end
   end
@@ -41,11 +41,11 @@ class UserModifyPasswordController < ApplicationController
   end
 
   def modify_password_user_name_check
-    if User.where(:name => params[:@user][:name]).empty?
+    if User.where(name: params[:@user][:name]).empty?
       @modify_login_error = 2
       return render action: 'modify_password_login_page'
     end
-    user = User.where(:name => params[:@user][:name])
+    user = User.where(name: params[:@user][:name])
     session[:user_id]= user[0].id
     redirect_to action: 'modify_password_question_page'
   end

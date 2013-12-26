@@ -1,8 +1,10 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  before_action :require_login   ,only: [:show,:add_new_user,:admin_add_new_user,:admin_modify_password_page,
-  :adminAddNewUser,:edit,:bid_list,:bid_detail_list,:sign_up_list,:synchronously_show]
+  before_action :require_login   ,only: [:show,:add_new_user,:admin_add_new_user,
+                                         :admin_modify_password_page,:adminAddNewUser,
+                                         :edit,:bid_list,:bid_detail_list,:sign_up_list,
+                                         :synchronously_show]
   protect_from_forgery with: :exception
   def set_page
     if params[:page]==nil
