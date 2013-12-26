@@ -17,7 +17,7 @@ class AdminController < ApplicationController
   end
 
   def user_name_same_check
-    if User.where(name: params[:user][:name])[0]!=nil
+    if User.find_by(name: params[:user][:name])!=nil
        @error_message = 'used_name'
        @current_user = set_user_info
        return render action: 'admin_add_new_user'

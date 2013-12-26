@@ -34,7 +34,7 @@ class UserModifyPasswordController < ApplicationController
 
   def user_check
     if params[:@user][:name].empty?
-      @modify_login_error = 1
+      @modify_login_error = 'empty_name'
       return render action: 'modify_password_login_page'
     end
     modify_password_user_name_check
@@ -42,11 +42,11 @@ class UserModifyPasswordController < ApplicationController
 
   def modify_password_user_name_check
     if User.where(name: params[:@user][:name]).empty?
-      @modify_login_error = 2
+      @modify_login_error = 'nonexistence_user'
       return render action: 'modify_password_login_page'
     end
-    user = User.where(name: params[:@user][:name])
-    session[:user_id]= user[0].id
+    user = User.find_by(name: params[:@user][:name])
+    session[:user_id]= user.id
     redirect_to action: 'modify_password_question_page'
   end
 

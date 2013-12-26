@@ -11,7 +11,7 @@ class BidController < ApplicationController
     @count_init= set_page
     @bid_ups= BidUp.paginate(page:params[:page],per_page:10).
         where(user:session[:current_user],activity:params[:name],bid_name:params[:bid_name])
-    result = BidResult.where(activity:params[:name],bid_name:params[:bid_name],
+    result = BidResult.find_by(activity:params[:name],bid_name:params[:bid_name],
                              user:session[:current_user])
     set_bid_message(result)
     bid_statistics = @bid_ups.select(:price).group(:price)
@@ -22,7 +22,7 @@ class BidController < ApplicationController
   end
 
   def set_bid_message(result)
-    if result.empty?
+    if result == nil
       return @bid_result = 'biding'
     end
     result_price_check(result)
