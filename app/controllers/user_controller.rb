@@ -24,7 +24,7 @@ class UserController < ApplicationController
        return go_to_user_index(user)
      end
      @login_error = true
-     render action: 'login_page'
+     render action:'login_page'
   end
 
   def go_to_user_index(user)

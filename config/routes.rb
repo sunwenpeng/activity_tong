@@ -1,7 +1,7 @@
 ActivityTong::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
 
-  root 'user#show'
+  root 'user#login_page'
 
   get 'user/show/synchronously_show' => 'user#synchronously_show'
   get 'user/login_page'
@@ -29,7 +29,7 @@ ActivityTong::Application.routes.draw do
   match 'user/show/:id/admin_modify_password_page' => 'admin#edit', :via=> :post,:as=>'admin'
   match 'user/delete/:id' =>'user#destroy',:via=>:delete,:as =>'user'
   match "user_enroll/show_enroll_form" => "user_enroll#enroll", :via => :post
-  match "/user/login_page" => "user#login", :via => :post
+  match "/" => "user#login", :via => :post
   match "/user_modify_password/modify_password_login_page" => "user_modify_password#user_check", :via=> :post
   match "/user_modify_password/modify_password_question_page" => "user_modify_password#answer_check", :via=> :post
   match "/user_modify_password/modify_password_page" => "user_modify_password#update", :via=> :post
