@@ -1,5 +1,8 @@
 ActivityTong::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
+
+  root 'user#show'
+
   get 'user/show/synchronously_show' => 'user#synchronously_show'
   get 'user/login_page'
   get "user_enroll/show_enroll_form"
@@ -40,7 +43,6 @@ ActivityTong::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -14,7 +14,8 @@ class UserController < ApplicationController
       if params[:user_name]
          session[:current_user] = params[:user_name]
       end
-      @activities=Activity.paginate(page:params[:page],per_page:10).where(create_user: session[:current_user])
+      @activities=Activity.paginate(page:params[:page],per_page:10).
+          where(create_user: session[:current_user])
       @current_bid = Bid.where(user:session[:current_user],status:'biding')[0]
   end
 
@@ -64,7 +65,8 @@ class UserController < ApplicationController
   end
 
   def set_bid_ended_info
-    @result = BidResult.where(user:session[:current_user],activity:@bid[:activity],bid_name:@bid[:name])[0]
+    @result = BidResult.where(user:session[:current_user],
+                              activity:@bid[:activity],bid_name:@bid[:name])[0]
     if @result.price!=-1
       @bid_success=true
       @bid_suc_person= @result.name
