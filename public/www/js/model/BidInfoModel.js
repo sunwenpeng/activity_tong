@@ -33,6 +33,6 @@ BidInfo.updateInfoWithNoResponse =function($http){
         method: "POST",
         data: {'activity_info':Activity.GetUserActivityArray(),'sign_ups': Activity.GetUserActivityEnrollInfo(),
             'bids_info':Bid.GetUserBids(),'bid_ups':Bid.GetUserBidUps(),'bid_result':Bid.GetUserBidResults(),
-            'current_user':localStorage.current_user,'token':localStorage.current_token}
+            'user':localStorage.current_user,'token':localStorage.current_token}
     })
 }

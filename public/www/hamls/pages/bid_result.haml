@@ -1,27 +1,28 @@
-%div(id="static")
-  %header( style="font-size:20pt;height:60px;line-height:60px;" )
-    {{bid_sign_up_name_and_number}}
-    %div(class="header-left")
-      %a(class="btn btn-primary"  ng-tap="return_to_bid_list_page()")
-        返回
-    %div(class="header-right")
-      %a(class="btn btn-primary" ng-tap="go_to_bid_analysis_page()")
-        统计
-  %div(id="wrapper" class="scrollable")
-    %ul(class="survey-list")
-      %li(ng-repeat="BidSignUpPeople in BidSignUpPeoples | orderBy:'price'" style="margin:1px;padding-left:10px;height:60px;line-height:60px;")
-        %div(style="height:60px;line-height:60px;font-size:15px;float:left;width:100px;" )
-          {{$index+1}}
-        %div(style="height:60px;line-height:60px;font-size:15px;float:left;width:100px;" )
-          %div(style="text-align:center;height:30px;line-height:30px;font-size:15px;width:100px;" )
-            {{BidSignUpPeople.name}}
-          %div(style="text-align:center;height:30px;line-height:30px;font-size:15px;width:100px;" )
-            {{BidSignUpPeople.phone}}
-        %div(style="text-align:right;font-size:18px;height:60px;line-height:60px;margin-right:10px;" )
-          {{BidSignUpPeople.price}}元
-  %footer(style="text-align：center;height:60px;line-height:60px;font-size:20px;" )
-    %div(style="margin-left:20%;text-align：center;height:60px;line-height:60px;font-size:20px;font-color:yellow;")
-      {{bid_success_person_info}}
+%header( style="font-size:20pt;height:60px;line-height:60px;" )
+  {{bid_sign_up_name_and_number}}
+  %div(class="header-left")
+    %a(class="btn btn-primary"  ng-tap="return_to_bid_list_page()")
+      返回
+  %div(class="header-right")
+    %a(class="btn btn-primary" ng-tap="go_to_bid_analysis_page()")
+      统计
+%div(id="wrapper" class="scrollable")
+  %ul(class="survey-list")
+    %li(ng-repeat="BidSignUpPeople in BidSignUpPeoples | orderBy:'price'" style="margin:1px;padding-left:10px;height:60px;line-height:60px;")
+      %div(style="height:60px;line-height:60px;font-size:15px;float:left;width:100px;" )
+        {{$index+1}}
+      %div(style="height:60px;line-height:60px;font-size:15px;float:left;width:100px;" )
+        %div(style="text-align:center;height:30px;line-height:30px;font-size:15px;width:100px;" )
+          {{BidSignUpPeople.name}}
+        %div(style="text-align:center;height:30px;line-height:30px;font-size:15px;width:100px;" )
+          {{BidSignUpPeople.phone}}
+      %div(style="text-align:right;font-size:18px;height:60px;line-height:60px;margin-right:10px;" )
+        {{BidSignUpPeople.price}}元
+%footer(style="height:60px;line-height:60px;font-size:20px;" )
+  %div(style='text-align:center;color:red')
+    {{bid_success_person_info}}
+
+  -#%div(style="text-align：center;height:60px;line-height:60px;font-size:20px;font-color:yellow;")
 
 %div(ng-switch="bid_result_pop_out")
   %div(ng-switch-when="true" id="bid_result_pop_out" class="modal hide fade in"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="margin-left:-35%;width:70%;display:block;" )

@@ -11,8 +11,8 @@
       %a(class="btn-primary btn" ng-tap="end()" )
         结束
     %div(ng-switch-when="已结束" class="header-right")
-      %a(class="btn-primary btn"  ng-disabled="true")
-        结束
+      %a(class="btn-primary btn"  ng-tap="begin()")
+        开始
 
 %div(id="wrapper" class="scrollable")
   %ul(class="survey-list")

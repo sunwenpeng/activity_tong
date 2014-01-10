@@ -1,7 +1,6 @@
 var native_accessor = {
 
     send_sms: function (phone, message) {
-        alert(phone+","+message);
         native_access.send_sms({"receivers": [
             {"name": 'name', "phone": phone}
         ]}, {"message_content": message});
@@ -16,11 +15,13 @@ var native_accessor = {
         var message_front = (message["messages"][0]["message"]).substring(0,2).toLocaleUpperCase();
         if (message_front == "BM") {
             message_enroll.bm(message) ;
-            activity_enroll_page_refresh();
+
+//            Activity.GetActivityEnrollInfo(Activity.GetActivityName())
         }
         else if(message_front == "JJ"){
             message_enroll.bid(message)
-            bid_sign_up_page_refresh()
+//            Activity.ActivityEnrollNumber()
+//            bid_sign_up_page_refresh()
         }
     }
 }

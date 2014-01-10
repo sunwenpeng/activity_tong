@@ -1,4 +1,7 @@
 function loginController($scope,$navigate,$http){
+//    if(localStorage.current_user){
+//       $navigate.go('/ActivityList')
+//    }
     $scope.loginCheck= function(){
         $http({
             url: "/phone_customer/customer_check",
@@ -12,7 +15,6 @@ function loginController($scope,$navigate,$http){
             localStorage.current_user = ($scope.person).name
             $navigate.go('/ActivityList')
              localStorage.current_token = response
-             console.log(response)
             }).error(function(error){
                 $scope.error = error;
             }).error(function(){

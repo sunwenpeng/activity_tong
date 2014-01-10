@@ -25,16 +25,24 @@ function BidSignUpController($scope, $navigate,$http) {
         $scope.BidSignUpPeoples = Bid.GetBidInfoArrayNew() ;
     }
 
-    $scope.data_init_bid = function () {
-        if ($scope.show_more_button == false) {
-            $scope.BidSignUpPeoples =  JSON.stringify(Bid.GetBidInfoArrayNew()) != JSON.stringify([]) ? [Bid.GetBidInfoArrayNew()[0]] : [] ;
+    $scope.data_refresh = function () {
+//        if ($scope.show_more_button == false) {
+//        var bid_info_array_new = Bid.GetBidInfoArrayNew();
+//        $scope.BidSignUpPeoples = bid_info_array_new;
+//        Bid.SetBidCollectedInfo(bid_info_array_new);
 
-            $scope.bid_sign_up_name_and_number = Bid.BidSignUpNameAndNumber();
+        $scope.BidSignUpPeoples = Bid.GetUserClassifiedBidUps() ;
 
-            $scope.show_more_button = (Bid.GetBidInfoArrayNew()).length > 1 ? true:false      ;
-        }
+        $scope.bid_sign_up_name_and_number = Bid.BidSignUpNameAndNumber();
+
+//            $scope.show_more_button = (Bid.GetBidInfoArrayNew()).length > 1 ? true:false      ;
+//        }
         BidInfo.updateInfoWithNoResponse($http);
     }
 
-    $scope.data_init_bid();
+    $scope.data_refresh();
+
+    $scope.push_data = function(){
+        BidInfo.updateInfo($http);
+    }
 }

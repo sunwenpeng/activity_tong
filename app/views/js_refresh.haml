@@ -1,0 +1,84 @@
+:javascript
+  //<![CDATA[
+    var refresh_job;
+    var compete_price_id = 1;
+    function refresh_job_start(){
+       refresh_job = setInterval('refresh(showNewPrice)',3000);
+    }
+    function refresh_job_stop(){
+      window.clearInterval(refresh_job);
+    }
+
+    $(document).ready(function () {
+      refresh_job_start();
+    });
+
+    function refresh(renderer){
+      get_data_and_call("/show_page/latest/result.json", renderer);
+    }
+
+    function showNewPrice(data){
+      //console.log(JSON.stringify(data))
+      show_with(data);
+    }
+
+    function show_with(data){
+      $('#price_show_list').html('');
+      $(data.no_duplicate).each(function(index, item){
+        render_list_item(index, item);
+      });
+
+      refresh_joined_people(data);
+
+    }
+
+    function refresh_joined_people(data){
+      $("#joined_people").html("<div class='left block ml10'>价格不重复: "+data.no_duplicate.length+"人</div><div class='left block ml10'>已出价： "+data.source.length+"人</div>");
+    }
+
+    function render_price(item){
+      return item_html(item.price);
+    }
+
+    function showResult(data){
+      show_with(data);
+    }
+
+    function show_all_bid(data){
+      //console.log(result_no_duplicate)
+      $('#price_show_list').html('');
+      $(data.source).each(function(index, item){
+        render_all_bid_list_item(index, item);
+      });
+
+      refresh_joined_people(data);
+
+    }
+
+    function render_list_item(index, item){
+      var list = $('#price_show_list');
+      var content = '<div class="tr clearfix">'
+      if(index == 0){
+        content += "<div class='num'><em class='red-round'>" + (index+1) +"</em></div>";
+      }else{
+        content += "<div class='num'><em>" + (index+1) +"</em></div>";
+      }
+      content += "<div class='name'>" + item.user_name + "</div>"
+          +"<div class='phone'>" + item.phone_no + "</div>"
+          +"<div class='price'>" + item.price +"</div>"
+          +'</div>';
+      list.append(content);
+    }
+
+    function render_all_bid_list_item(index, item){
+        var list = $('#price_show_list');
+        var content = '<div class="tr clearfix">'
+        content += "<div class='num'><em>" + (index+1) +"</em></div>";
+
+        content += "<div class='name'>" + item.user_name + "</div>"
+            +"<div class='phone'>" + item.phone_no + "</div>"
+            +"<div class='price'>" + item.price +"</div>"
+            +'</div>';
+        list.append(content);
+      }
+  //]]>

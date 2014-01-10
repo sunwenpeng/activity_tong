@@ -25,7 +25,7 @@ myModule.config(function ($routeProvider) {
             controller: BidAnalysisController
         })
         .otherwise({
-            redirectTo: "/"
+            redirectTo: "/ActivityList"
         });
 
     //routing generate

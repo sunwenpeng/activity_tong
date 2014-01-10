@@ -3,6 +3,7 @@ function ActivityEnrollController($scope, $navigate,$http) {
         $navigate.go('/ActivityList');
     }
     var activity_index = Activity.ActivitySearch(Activity.GetActivityArray(), Activity.GetActivityName());
+    $scope.activity_status = Activity.GetActivityArray()[activity_index]["status"];
 
     $scope.begin = function () {
         Activity.ActivityEnrollBegin();
@@ -19,17 +20,18 @@ function ActivityEnrollController($scope, $navigate,$http) {
         }
     }
 
-    $scope.data_init = function () {
-        $scope.activity_status = Activity.GetActivityArray()[activity_index]["status"];
+    $scope.data_refresh = function () {
 
-        $scope.EnrollingActivities = Activity.GetActivityEnrollInfo(Activity.GetActivityName());
+        $scope.EnrollingActivities=JSON.parse(localStorage.getItem(localStorage.getItem("ActivityName")));
+
+//        $scope.EnrollingActivities = Activity.GetActivityEnrollInfo(Activity.GetActivityName());
 
         $scope.enroll_number = Activity.ActivityEnrollNumber();
 
-        BidInfo.updateInfoWithNoResponse($http);
+//        BidInfo.updateInfoWithNoResponse($http);
     }
-
-    $scope.data_init();
+    $scope.data_refresh()
+//    $scope.data_init();
 
     $scope.go_bid_list_page = function () {
         $navigate.go("/BidList");

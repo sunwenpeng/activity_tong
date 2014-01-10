@@ -7,7 +7,8 @@
   %form(class="wrapper-inner" )
     %fieldset(class="form_wrapper" style="font-size:16pt" )
       活动名称
-      %input(ng-model="input_activity_name" ng-change="activity_name_input_status()" type="text" class="input-full" style="height:30px" )
-      %button(ng-model="create_button" class="btn btn-large" ng-tap="go_to_activity_enroll()" ng-disabled="!input_activity_name")
+      %input(ng-model="input_activity_name" ng-change="activity_name_input_status()" type="text" class="input-full" style="margin-top:10px;height:30px" )
+      %button(ng-model="create_button" class="btn btn-large" ng-tap="go_to_activity_enroll()" ng-disabled="!input_activity_name" style= "width:100%")
         创建
-      %span(ng-show="checked" style="color:red" ) 活动名称重复！
+      %div(ng-switch="name_repeat_checked" style="text-align:center;margin-top:1%;color:red" )
+        %div(ng-switch-when='true')活动名称重复！

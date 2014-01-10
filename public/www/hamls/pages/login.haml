@@ -1,18 +1,16 @@
 %h1(style="text-align:center;margin-top:8%" )
   活动通
 %div(class="hero-unit" style="margin-top:50px;font-size:15px;width:80%;margin-left:auto;margin-right:auto" )
-  %form(name="login_form" class='form-horizontal' ng-submit='')
+  %form(name="login_form" class='form-horizontal')
     %fieldset
       %div(class="form-group" style="height:40px" )
         %label(class="control-label" style="font-weight:normal;width:20%"  )
           用户
-        %div(class="" style="width:75%;float:right" )
-          %input(name="login_name" ng-model="person.name" class="form-control" placeholder="请输入用户名" required )
+        %div( style="width:75%;float:right" )
+          %input(style='height:32px;' name="login_name" ng-model="person.name" class="form-control" placeholder="请输入用户名" required )
       %div(class="form-group"style="height:40px" )
         %label(class=" control-label" style="font-weight:normal;width:20%" )
           密码
-        %div(class="" style="width:75%;float:right")
-          %input(name="login_password" ng-model='person.password' class="form-control" placeholder="请输入密码" required)
-      %span(ng-show="myForm.personEmail.$error.required")
-        必填
-      %input(type="button" value="登录" ng-disabled="login_form.$invalid " class="btn btn-primary " style="width:120%;margin-left:-10%;margin-top:10%;" ng-tap="loginCheck()")
+        %div(style="width:75%;float:right;")
+          %input(style='height:32px;' type="password" name="login_password" ng-model='person.password' class="form-control" placeholder="请输入密码" required)
+      %input(type="button" value="登录" ng-disabled="login_form.$invalid " class="btn btn-primary " style="height:40px;width:120%;margin-left:-10%;margin-top:10%;" ng-tap="loginCheck()")

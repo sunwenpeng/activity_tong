@@ -1,5 +1,7 @@
 %header(id="bid_sign_up_page" style="font-size:20pt;height:60px;line-height:60px;" )
   {{bid_sign_up_name_and_number}}
+  %a(class="btn-primary btn" style="background:#A8A8A8;color:yellow" ng-tap="push_data()")
+    同步数据
   %div(class="header-left")
     %a(class="btn btn-primary"  ng-tap="turn_to_bid_list_page()")
       返回
@@ -14,7 +16,7 @@
   %ul(class="survey-list")
     %li(ng-repeat="BidSignUpPeople in BidSignUpPeoples" style="height:60px;line-height:70px;font-size:16pt;")
       %h3(style="float:left" )
-        {{BidSignUpPeople.order}}
+        {{$index+1}}
       %h5(style="float:right" )
         {{BidSignUpPeople.name}}
         <br/>

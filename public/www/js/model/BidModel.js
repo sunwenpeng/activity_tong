@@ -47,7 +47,25 @@ Bid.GetUserBids =function(){
 
 Bid.GetUserBidUps = function(){
     var bid_up_name = _.map(Bid.GetUserBids(),function(ob){return ob.activity+ ob.name});
-    return _.flatten(_.map(bid_up_name,function(name){var bids=JSON.parse(localStorage.getItem(name));return _.map(bids,function(ob){var index=name.indexOf("竞价"); ob.bid_name=name.substring(index);ob.activity=name.substring(0,index);ob.user=localStorage.current_user;return ob;})}))
+    var bid_ups = _.flatten(_.map(bid_up_name,function(name){var bids=JSON.parse(localStorage.getItem(name));return _.map(bids,function(ob){var index=name.indexOf("竞价"); ob.bid_name=name.substring(index);ob.activity=name.substring(0,index);ob.user=localStorage.current_user;return ob;})}))
+    bid_ups = _.sortBy(bid_ups , function(ob){return ob.price})
+    var index = Bid.BidPriceResultIndex(bid_ups)
+    var first = bid_ups[0]
+    bid_ups[0] = bid_ups[index]
+    bid_ups[index] = first
+    return bid_ups
+}
+
+Bid.GetUserClassifiedBidUps= function(){
+    var BidSignUpPeoples = JSON.stringify(Bid.GetBidInfoArrayNew()) != JSON.stringify([]) ? Bid.GetBidInfoArrayNew() : [] ;
+    if (JSON.stringify(BidSignUpPeoples)!= JSON.stringify([])){
+    BidSignUpPeoples = _.sortBy(BidSignUpPeoples , function(ob){return ob.price})
+    var index = Bid.BidPriceResultIndex(BidSignUpPeoples)
+    var first = BidSignUpPeoples[0]
+    BidSignUpPeoples[0] = BidSignUpPeoples[index]
+    BidSignUpPeoples[index] = first
+    }
+    return BidSignUpPeoples
 }
 
 Bid.GetBidInfoArrayNew = function () {
@@ -105,6 +123,8 @@ Bid.PushNewBid = function () {
     bid_object["name"] = "竞价" + (bid_array.length + 1).toString();
     bid_object["bid_order"] = bid_array.length + 1;
     bid_object["status"] = "biding"
+    bid_object['created_time'] =  new Date() ;
+    bid_object['end_time'] = '' ;
     bid_array.push(bid_object);
     localStorage.setItem(localStorage.getItem("ActivityName") + "竞价", JSON.stringify(bid_array));
     localStorage.setItem("biding_name", bid_object["name"]);
@@ -124,6 +144,7 @@ Bid.BidStatusChange = function () {
     var bid_array = JSON.parse(localStorage.getItem(localStorage.getItem("ActivityName") + "竞价"));
     var activity_bid_number = Bid.BidNameSearch(localStorage.getItem("bid_name"), localStorage.getItem("ActivityName") + "竞价");
     bid_array[activity_bid_number]["status"] = "已结束";
+    bid_array[activity_bid_number]['end'] = new Date();
     localStorage.setItem(localStorage.getItem("ActivityName") + "竞价", JSON.stringify(bid_array));
 }
 

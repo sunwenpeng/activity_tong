@@ -30,7 +30,7 @@ myModule.directive('ngTap', function () {
                 tapping = true;
             });
             elm.bind('touchmove', function () {
-                tapping = false;
+                tapping = true;
             });
             elm.bind('touchend', function () {
                 tapping && scope.$apply(attrs.ngTap);
@@ -53,22 +53,22 @@ $(document).ready(function () {
 
 });
 
-function activity_enroll_page_refresh() {
+Activity.data_refresh=function() {
     var bid_info = document.getElementById("activity_enroll_page");
     if (bid_info) {
         var scope = angular.element(bid_info).scope();
         scope.$apply(function () {
-            scope.data_init();
+            scope.data_refresh();
         })
     }
 }
 
-function bid_sign_up_page_refresh() {
+Bid.data_refresh=function() {
     var bid_info = document.getElementById("bid_sign_up_page");
     if (bid_info) {
         var scope = angular.element(bid_info).scope();
         scope.$apply(function () {
-            scope.data_init_bid();
+            scope.data_refresh();
         })
     }
 }
